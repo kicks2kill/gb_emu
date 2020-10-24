@@ -1,0 +1,9 @@
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/rebuild_cache.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/SDL2-static.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/SDL2main.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/install/local.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/install.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/edit_cache.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/SDL2.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/uninstall.dir
+D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/list_install_components.dir

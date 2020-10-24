@@ -1,0 +1,169 @@
+The system is: Windows - 10.0.19041 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Version 19.27.29111 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+CMakeCCompilerId.c
+Microsoft (R) Incremental Linker Version 14.27.29111.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCCompilerId.exe 
+CMakeCCompilerId.obj 
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+
+The C compiler identification is MSVC, found in "D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/3.17.20032601-MSVC_2/CompilerIdC/CMakeCCompilerId.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Version 19.27.29111 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+CMakeCXXCompilerId.cpp
+Microsoft (R) Incremental Linker Version 14.27.29111.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCXXCompilerId.exe 
+CMakeCXXCompilerId.obj 
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+
+The CXX compiler identification is MSVC, found in "D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/3.17.20032601-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_9eca1 && [1/2] Building C object CMakeFiles\cmTC_9eca1.dir\testCCompiler.c.obj
+[2/2] Linking C executable cmTC_9eca1.exe
+
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_fa4fc && [1/2] Building C object CMakeFiles\cmTC_fa4fc.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_fa4fc.exe
+
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_72726 && [1/2] Building CXX object CMakeFiles\cmTC_72726.dir\testCXXCompiler.cxx.obj
+[2/2] Linking CXX executable cmTC_72726.exe
+
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_21d2d && [1/2] Building CXX object CMakeFiles\cmTC_21d2d.dir\CMakeCXXCompilerABI.cpp.obj
+[2/2] Linking CXX executable cmTC_21d2d.exe
+
+
+
+Performing C SOURCE FILE Test HAVE_WIN32_CC succeeded with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_8d89d && [1/2] Building C object CMakeFiles\cmTC_8d89d.dir\src.c.obj
+[2/2] Linking C executable cmTC_8d89d.exe
+
+
+Source file was:
+
+    #include <windows.h>
+    int main(int argc, char **argv) { }
+Performing C SOURCE FILE Test HAVE_XINPUT_H succeeded with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_c95ab && [1/2] Building C object CMakeFiles\cmTC_c95ab.dir\src.c.obj
+[2/2] Linking C executable cmTC_c95ab.exe
+
+
+Source file was:
+
+        #include <windows.h>
+        #include <xinput.h>
+        int main(int argc, char **argv) { }
+Determining if the include file d3d9.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_4bd1f && [1/2] Building C object CMakeFiles\cmTC_4bd1f.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_4bd1f.exe
+
+
+
+Determining if the include file d3d11_1.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_8b007 && [1/2] Building C object CMakeFiles\cmTC_8b007.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_8b007.exe
+
+
+
+Determining if the include file ddraw.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_f5ef5 && [1/2] Building C object CMakeFiles\cmTC_f5ef5.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_f5ef5.exe
+
+
+
+Determining if the include file dsound.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_398d1 && [1/2] Building C object CMakeFiles\cmTC_398d1.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_398d1.exe
+
+
+
+Determining if the include file dinput.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_ce465 && [1/2] Building C object CMakeFiles\cmTC_ce465.dir\CheckIncludeFile.c.obj
+C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+[2/2] Linking C executable cmTC_ce465.exe
+
+
+
+Determining if the include file dxgi.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_493a7 && [1/2] Building C object CMakeFiles\cmTC_493a7.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_493a7.exe
+
+
+
+Determining if the include file mmdeviceapi.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_ad2b2 && [1/2] Building C object CMakeFiles\cmTC_ad2b2.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_ad2b2.exe
+
+
+
+Determining if the include file audioclient.h exists passed with the following output:
+Change Dir: D:/GB_dev/gb_emu/gb_emu/Emu/SDL/out/build/x64-Debug (default)/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_d31ba && [1/2] Building C object CMakeFiles\cmTC_d31ba.dir\CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_d31ba.exe
+
+
+
