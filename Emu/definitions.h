@@ -1,6 +1,6 @@
 /*
-    Created by Orin in 2020
-    All copyrights reserved.
+   Nintendo Game boy Emulator
+   Copyright (C) 2020 Orin
 */
 
 
