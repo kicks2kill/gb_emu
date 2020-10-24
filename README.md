@@ -4,3 +4,6 @@ This serves as a long-term project to learn how the hardware architecture functi
 
 ## References:
  Gearboy
+ Pan Docs
+ Nintendo Official programming manual
+ 
