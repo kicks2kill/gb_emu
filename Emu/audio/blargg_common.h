@@ -31,4 +31,41 @@
     #endif
 #endif
 
+#ifndef blargg__err
+    typedef const char* blargg__err;
+#endif
+
+
+/*
+    Borrowing from Gearboy. - lightweight vector of POD type
+*/
+
+template <class T>
+class blargg_vector {
+    T* begin_;
+    size_t size_;
+public:
+    blargg_vector() : begin_ {0}, size_ {0} {}
+    ~blargg_vector() {free( begin_ );}
+    size_t size() const {return size_;}
+    T* begin() const {return begin_;}
+    T* end() const {return begin_ + size_;}
+    blargg__err resize (size_t n)
+    {
+        void* p = realloc(begin_, n * sizeof (T));
+        if (p)
+            begin_ = (T*) p;
+        else if (n > size_) //realloc failure only a problem if expanding
+            return "Out of memory. sorry bud";
+        size_ = n;
+        return 0;
+    }
+    void clear() {void* p = begin_; begin_ = 0; size_ = 0; free(p);}
+    T& operator [] (size_t n) const 
+    {
+        assert(n <= size_); //allow past-the-end value
+        return begin_[n];
+    }
+};
+
 #endif
