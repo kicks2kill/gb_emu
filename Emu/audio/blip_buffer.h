@@ -139,3 +139,40 @@ const int blip_med_q = 8;
 const int blip_good_q = 12;
 const int blip_high_q = 16;
 
+
+template<int quality, int range>
+class blip_synth {
+public:
+    //set overall volume of particular waveform
+    void volume ( double v) {impl.volume_unit(v * (1.0 / (range < 0 ? -range : range)));}
+
+    //configure low-pass filter
+    void treble_eq( blip_eq_t const& eq) { impl.treble_eq(eq);}
+
+    //get/set blip_buffer for our output
+    blip_buffer* output() const {return impl.buf;}
+    void output(blip_buffer* b) {impl.buf = b; impl.last_amp = 0;}
+
+    //update amplitude of waveform at a given time. We need a separate blip_synth for each waveform
+
+    void update(blip_time_t time, int amplitude);
+
+//  // Low level implementations
+
+    //Add an amplitutde transition of a specified delta, if we choose into a specified buffer
+    //rather than the one set with output(). Delta is signed
+    //the actual change in amplitude is delta * (volume / range)
+
+    void offset(blip_time_t t, int delta, blip_buffer*) const;
+    void offset( blip_time_t t, int delta) const { offset(t, delta, impl.buf);}
+
+private:    
+    #if BLIP_BUFFER_FAST
+        #define  blip_synth_fast_ impl;
+    #else
+        blip_synth_ impl;
+        short impulses [ blip_res * (quality / 2) + 1];
+public:
+    blip_synth() : impl( impulses, quality) {}
+    #endif
+};
