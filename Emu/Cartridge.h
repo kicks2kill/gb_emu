@@ -65,7 +65,7 @@ private:
     void CheckCartridgeType(int type);
 
 private:
-    uint8_t m_Rom;
+    uint8_t* m_ROM;
     int m_TotalSize;
     char m_szName[16];
     int m_ROMSize;

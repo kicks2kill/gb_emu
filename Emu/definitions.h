@@ -28,6 +28,16 @@
 
 #define SAVESTATE 0x28000000
 
+
+#define MAX_ROM_SIZE 0x800000
+
+#define InitPointer(pointer)((pointer) = NULL)
+#define IsValidPointer(pointer)((pointer) != NULL)
+
+#define SafeDelete(pointer) if(pointer != NULL) {delete pointer; pointer = NULL;}
+#define SafeDeleteArray(pointer) if(pointer != NULL) {delete [] pointer; pointer = NULL;}
+
+
 enum Gameboy_Keys
 {
     A_Key = 4,
