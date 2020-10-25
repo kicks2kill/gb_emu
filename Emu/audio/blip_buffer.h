@@ -7,17 +7,7 @@
 #define BLIP_BUFFER_H
 
 #include <limits.h>
-#if INT_MAX < 0x7FFFFFFF || LONG_MAX == 0x7FFFFFFF
-    typedef long blip_long;
-    typedef unsigned long blip_ulong;
-#else
-    typedef int blip_long;
-    typedef unsigned blip_ulong;
-#endif
 
-typedef blip_long blip_time_t; 
-
-typedef short blip_sample_t;
 enum { blip_sample_max = 32767};
 
 struct blip_buffer_state_t;
@@ -34,12 +24,12 @@ public:
     
     //Ends current time frame of specified duration and makes its samples available
     //for reading with read_samples(). Begin a new time frame at end of current frame
-    void end_frame(blip_time_t time);
+    void end_frame(long time);
 
     //Reads at most 'max_samples' out of buffer into 'dest', removing from the buffer.
     //returns number of samples actually read and removed. If stereo is true, increments
     //'dest' one extra time after writing each sample, to allow easy interleaving of two channels into a stereo output buffer
-    long read_samples(blip_sample_t* dest, long max_samples, int stereo = 0);
+    long read_samples(short* dest, long max_samples, int stereo = 0);
    
     void clear(int entire_buffer = 1);
 
@@ -64,10 +54,9 @@ private:
     blip_buffer& operator = (const blip_buffer&);
 
 public:
-    typedef blip_long buf_t_;
-    buf_t_* buffer_;
-    blip_long buffer_size_;
-    blip_long reader_accum_;
+    long* buffer_;
+    long buffer_size_;
+    long reader_accum_;
     int bass_shift_;
 
 private:
@@ -97,7 +86,6 @@ private:
 
 
 //internal use
-typedef blip_ulong blip_resampled_time_t;
 int const blip_widest_impulse_ = 16;
 int const blip_buffer_extra_ = blip_widest_impulse_ + 2;
 int const blip_res = 1 << BLIP_PHASE_BITS;
@@ -127,7 +115,7 @@ private:
     double m_volume_unit;
     short* const impulse;
     int const width;
-    blip_long kernel_unit;
+    long kernel_unit;
     int impulse_size() const { return blip_res / 2 * width + 1;}
     void adjust_impulse();
 };
@@ -155,7 +143,7 @@ public:
 
     //update amplitude of waveform at a given time. We need a separate blip_synth for each waveform
 
-    void update(blip_time_t time, int amplitude);
+    void update(long time, int amplitude);
 
 //  // Low level implementations
 
@@ -163,8 +151,8 @@ public:
     //rather than the one set with output(). Delta is signed
     //the actual change in amplitude is delta * (volume / range)
 
-    void offset(blip_time_t t, int delta, blip_buffer*) const;
-    void offset( blip_time_t t, int delta) const { offset(t, delta, impl.buf);}
+    void offset(long t, int delta, blip_buffer*) const;
+    void offset( long t, int delta) const { offset(t, delta, impl.buf);}
 
 private:    
     #if BLIP_BUFFER_FAST
