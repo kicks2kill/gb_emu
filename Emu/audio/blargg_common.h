@@ -3,7 +3,7 @@
    Copyright (C) 2020 Orin
 */
 
-//utilize gameboy sounds
+//utilize gameboy sounds - set up common environment for Shay Green's blargg library
 
 #ifndef BLARGG_COMMON_H
 #define BLARGG_COMMON_H
@@ -67,5 +67,60 @@ public:
         return begin_[n];
     }
 };
+
+#ifndef BLARGG_DISABLE_NOTHROW
+    //throw spec mandatory in ISO C++ when operater new can return NULL
+    #if __cplusplus >= 199711 || __GNUC__ >= 3
+        #define BLARGG_THROWS(spec) throw spec
+    #else
+        #define BLARGG_THROWS(spec)
+    #endif
+    #define BLARGG_DISABLE_NOTHROW \
+        void* operator new (size_t n) BLARGG_THROWS(()) {return malloc(n);} \
+        void operater delete (void* p) {free (p);}
+    #define BLARG__NEW new
+#else
+    #include <new>
+    #define BLARGG_NEW new (std::nothrow)
+#endif
+
+//BLARGG_4CHAR('n,'n','n','n') equates to 'nnnn' as a four character int constant
+// #define BLARGG_4CHAR(a,b,c,d) 
+
+//BLARGG_COMPILER_HAS_BOOL --- if 0, provide bool support for old compilers. if 1, compiler is assumed to support bool. If neither and undefined, availability is determined
+#ifndef BLARGG_COMPILER_HAS_BOOL
+    #if defined (__MWERKS__)
+        #if !__option(bool)
+            #define BLARGG_COMPILER_HAS_BOOL 0
+        #endif
+    #elif defined (_MSC_VER)
+        #if _MSC_VER < 1100
+            #define BLARGG_COMPILER_HAS_BOOL 0
+        #endif
+    #elif defined (__GNUC__)
+        //supports bool
+    #elif __cplusplus < 199711
+        #define BLARGG_COMPILER_HAS_BOOL 0
+    #endif
+#endif
+
+//blargg_long is at least 32 bits and possibly an int
+#if INT_MAX < 0x7FFFFFFF || LONG_MAX == 0x7FFFFFFF
+    typedef long blargg_long;
+#else
+    typedef int blargg_long;
+#endif
+
+#if UINT_MAX < 0x7FFFFFFF || ULONG_MAX == 0x7FFFFFFF
+    typedef unsigned long blargg_ulong;
+#else
+    typedef unsigned blargg_ulong;
+#endif
+
+
+
+
+
+
 
 #endif

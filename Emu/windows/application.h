@@ -6,6 +6,7 @@
 #ifndef APPLICATION_H
 #define	APPLICATION_H
 
+#define SDL_MAIN_HANDLED
 #include "SDL/include/SDL.h"
 
 #ifdef APPLICATION_IMPORT
