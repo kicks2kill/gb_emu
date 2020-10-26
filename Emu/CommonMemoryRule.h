@@ -33,6 +33,14 @@ public:
     virtual uint8_t* GetRTCMemory();
     virtual void SaveState(std::ostream& stream);
     virtual void LoadState(std::istream& stream);
+
+protected:
+    Memory* m_pMemory;
+    Processor* m_pProcessor;
+    Cartridge* m_pCartridge;
+    Audio* m_pAudio;
+    bool m_bCGB;
+    RamChangedCallback m_pRamChangedCallback;
 };
 
 #endif
