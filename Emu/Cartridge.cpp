@@ -163,9 +163,17 @@ bool Cartridge::LoadFromFile(const char* path)
     strcpy(m_szFileName, filename.c_str());
 
     std::ifstream file(path, std::ios::in | std::ios::binary | std::ios::ate);
+    if (file.is_open())
+    {
+        int size = static_cast<int>(file.tellg());
+        char* memblock = new char[size];
+        file.seekg(0,std::ios::beg);
+        file.read(memblock, size);
+        file.close();
+        
+        //check extension type 
+    }
 
-    //add if logic for if file is open or not... 
-    // here
     return m_bLoaded;
 }
 

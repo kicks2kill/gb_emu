@@ -163,4 +163,31 @@ private:
 public:
     blip_synth() : impl( impulses, quality) {}
     #endif
+
+class blip_eq_t {
+public:
+    blip_eq_t(double treble_db = 0);
+    blip_eq_t(double treble, long rolloff, long sample_rate, long cutoff = 0);
+
+private:    
+    double treble;
+    long rolloff;
+    long sample_rate;
+    long cutoff;
+    void generate(float* out, int count) const;
+    friend class blip_synth_;
+};
+int const blip_sample_bits = 30;
+
+class silent_blip_buffer : public blip_buffer 
+{
+     long buf [blip_buffer_extra_ + 1];
+public:
+    blargg__err set_sample_rate(long samples_per_sec, int msec_length);
+    long count_clocks_frame(long count) const;
+    void mix_samples(short const* buf,long count);
+    
+    silent_blip_buffer();
+};
+
 };
