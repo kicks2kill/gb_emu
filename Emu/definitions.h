@@ -40,6 +40,7 @@
 #define SafeDelete(pointer) if(pointer != NULL) {delete pointer; pointer = NULL;}
 #define SafeDeleteArray(pointer) if(pointer != NULL) {delete [] pointer; pointer = NULL;}
 
+typedef void (*RamChangedCallback) (void);
 
 enum Gameboy_Keys
 {
