@@ -16,6 +16,9 @@
 #include <fstream>
 #include <sstream>
 
+#define Log(msg, ...)
+
+
 #define FLAG_ZERO 0x80
 #define FLAG_SUB 0x40
 #define FLAG_HALF 0x20
@@ -50,7 +53,7 @@ enum Gameboy_Keys
     Down_Key = 3
 };
 
-inline void Logger(const char* const msg, ...) 
+inline void LogFunc(const char* const msg, ...) 
 {
     static int count = 1;
     char szBuf[512];

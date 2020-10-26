@@ -86,4 +86,6 @@ private:
     int m_ROMBankCount;
     std::list<GameGenieCode> m_GameGenieList;
 };
+
+
 #endif
