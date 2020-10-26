@@ -8,6 +8,7 @@
 
 #include "definitions.h"
 #include "MemoryRules.h"
+#include "CommonMemoryRule.h"
 #include <vector>
 
 class Processor;
