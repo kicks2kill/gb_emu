@@ -42,6 +42,14 @@
 
 typedef void (*RamChangedCallback) (void);
 
+struct GB_Color
+{
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+};
+
+
 enum Gameboy_Keys
 {
     A_Key = 4,
@@ -52,6 +60,14 @@ enum Gameboy_Keys
     Left_Key = 1,
     Up_Key = 2,
     Down_Key = 3
+};
+
+enum GB_Color_Format
+{
+    GB_PIXEL_RGB565,
+    GB_PIXEL_RGB555,
+    GB_PIXEL_BGR565,
+    GB_PIXEL_BGR555
 };
 
 inline void LogFunc(const char* const msg, ...) 

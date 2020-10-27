@@ -57,6 +57,7 @@ inline void MemoryRules::PerformWrite(uint16_t addr, uint8_t value)
             m_pMemory->Load(addr,value);
       }
       case 0xC000:
+      {
          if(addr < 0xDE00)
          {
             if(m_bCGB)
@@ -65,8 +66,21 @@ inline void MemoryRules::PerformWrite(uint16_t addr, uint8_t value)
                m_pMemory->Load(addr, value);
             m_pMemory->Load(addr + 0x2000, value);
          }
-         //finish the switch case statement
-   }
+         else if(m_bCGB)
+         {
+            m_pMemory->WriteCGBLCDWRAM(addr,value);
+         }
+         else 
+         {
+            m_pMemory->Load(addr,value);
+         }
+         break;
+      }
+      default: 
+      {
+         Log("**** Writing to invalid area %X %X", addr,value);
+         m_pMemory->Load(addr,value);
+      }
+    }
 }
-
 #endif
