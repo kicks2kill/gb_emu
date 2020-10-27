@@ -29,7 +29,7 @@ public:
 public:
     Memory();
     ~Memory();
-    // void SetProcessor(Processor* pProcessor);
+     void SetProcessor(Processor* pProcessor);
     // void SetVideo(Video* pVideo);
     // void SetIORule(IORegisterMemoryRule* pRule);
     void Init();

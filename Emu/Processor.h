@@ -86,7 +86,6 @@ private:
     int m_iSpeedMultiplier;
     int m_iAccurateOpCodeState;
     uint8_t m_iReadCache;
-
     ProcessorState m_ProcessorState;
 
 //This style of fetching OP Codes is borrowed from GearBoy.  Please refer to them on how this is handled.
@@ -663,6 +662,22 @@ private:
     void OPCodeCB0xFF();
 };
 
+/*
+    Move these into an inlined header 
+*/
+inline int Processor::AdjustedCycles(int cycles)
+{
+    if (!cycles) return cycles;
+    return cycles >> m_iSpeedMultiplier;
+}
 
+inline Processor::Interrupts Processor::InterruptPending()
+{
+    uint8_t ie_reg = m_pMemory->Retrieve(0xFFFF);
+    uint8_t if_reg = m_pMemory->Retrieve(0xFF0F);
+    uint8_t ie_if = if_reg & ie_reg;
+
+    //define the interrupt types but first need to gather the addresses.
+}
 
 #endif
