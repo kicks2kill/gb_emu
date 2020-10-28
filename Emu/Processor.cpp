@@ -93,14 +93,67 @@ uint8_t Processor::Tick()
     {
         m_iCurrentClockCycles += AdjustedCycles(4);
 
+        if(m_iUnhaltCycles > 0)
+        {
+            m_iUnhaltCycles -= m_iCurrentClockCycles;
+            if(m_iUnhaltCycles <= 0)
+            {
+                m_iUnhaltCycles = 0;
+                m_bHalt = false;
+            }
+        }
+
         if(m_bHalt && (InterruptPending() != None_Interrupt) && (m_iUnhaltCycles == 0))
         {
             m_iUnhaltCycles = AdjustedCycles(12);
         }
     }
 
+    bool interrupt_sent = false;
+
+    if(!m_bHalt)
+    {
+        Interrupts interrupt = InterruptPending();
+        if(m_bIME && (interrupt != None_Interrupt))
+        {
+            ServeInterrupt(interrupt);
+            interrupt_sent = true;
+        }
+        else
+        {
+            ExecuteOPCode(FetchOPCode());
+        }
+    }
+
+    if(!interrupt_sent && (m_iInterruptDelayCycles > 0))
+    {
+        m_iInterruptDelayCycles -= m_iCurrentClockCycles;
+    }
+    UpdateTimers();
+    UpdateSerial();
+    return m_iCurrentClockCycles;
 }
 
+
+
+void Processor::UpdateTimers()
+{
+    m_iDIVCycles += m_iCurrentClockCycles;
+    unsigned int div_cycles = AdjustedCycles(256);
+    while(m_iDIVCycles >= div_cycles)
+    {
+        m_iDIVCycles -= div_cycles;
+        uint8_t div = m_pMemory->Retrieve(0xFF04);
+        div++;
+        m_pMemory->Load(0xFF04,div);
+    }
+    //TODO add tac and frequency
+}
+
+void Processor::UpdateSerial()
+{
+    //TODO
+}
 
 
 

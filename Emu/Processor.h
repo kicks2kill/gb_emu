@@ -677,7 +677,41 @@ inline Processor::Interrupts Processor::InterruptPending()
     uint8_t if_reg = m_pMemory->Retrieve(0xFF0F);
     uint8_t ie_if = if_reg & ie_reg;
 
-    //define the interrupt types but first need to gather the addresses.
+    if((ie_if & 0x1F) == 0)
+    {
+        return None_Interrupt;
+    }
+    else if ((ie_if & 0x01) && (m_iInterruptDelayCycles = 0))
+    {
+        return VBlank_Interrupt;
+    }
+    else if (ie_if & 0x02)
+    {
+        return LCDSTAT_Interrupt;
+    }
+    else if (ie_if & 0x04)
+    {
+        return Timer_Interrupt;
+    }
+    else if (ie_if & 0x08)
+    {
+        return Serial_Interrupt;
+    }
+    else if(ie_if & 0x10)
+    {
+        return Joypad_Interrupt;
+    }
+    return None_Interrupt;
+}
+
+inline void Processor::RequestInterrupt(Interrupts interrupt)
+{
+    m_pMemory->Load(0xFF0F, m_pMemory->Retrieve(0xFF0F) | interrupt);
+
+    if((interrupt == VBlank_Interrupt) && !m_bCGBSpeed)
+    {
+        m_iInterruptDelayCycles = 4;
+    }
 }
 
 #endif
