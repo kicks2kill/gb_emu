@@ -31,6 +31,11 @@ public:
     virtual uint8_t* GetRAMBanks();
     virtual uint8_t* GetCurrentRamBank();
     virtual int GetCurrentRAMBankIndex();
+    virtual int GetCurrentROMBankIndex();
+    virtual uint8_t* GetROMBank0();
+    virtual int GetCurrentROMBank0Index();
+    virtual uint8_t* GetROMBank1();
+    virtual int GetCurrentROMBank1Index();
     virtual uint8_t* GetRTCMemory();
     virtual void SaveState(std::ostream& stream);
     virtual void LoadState(std::istream& stream);

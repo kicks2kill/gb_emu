@@ -62,6 +62,38 @@ int CommonMemoryRule::GetCurrentRAMBankIndex()
     return NULL;
 }
 
+uint8_t* CommonMemoryRule::GetROMBank0()
+{
+    Log("CommonMemoryRule::GetROMbank0 not implemented");
+    return NULL;
+}
+
+
+int CommonMemoryRule::GetCurrentROMBank0Index()
+{
+    Log("CommonMemoryRule::GetROMBank0Index not implemented");
+    return 0;
+}
+
+uint8_t* CommonMemoryRule::GetROMBank1()
+{
+    Log("CommonMemoryRule::GetROMBank1 not implemented");
+    return NULL;
+}
+
+int CommonMemoryRule::GetCurrentROMBank1Index()
+{
+    Log("CommonMemoryRule::GetCurrentROMBank1Index not implemented");
+    return 0;
+}
+
+
+uint8_t* CommonMemoryRule::GetRTCMemory()
+{
+    Log("MemoryRule::GetRTCMemory not implemented");
+    return NULL;
+}
+
 
 void CommonMemoryRule::SaveState(std::ostream&)
 {
