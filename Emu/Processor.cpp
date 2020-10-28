@@ -198,13 +198,20 @@ void Processor::UpdateSerial()
    
 }
 
+//  // Come back to this
 
-void Processor::Disassemble(uint16_t address)
-{    //   //Need to define a new method in Memory for this.
-    // Memory::stDisassembleRecord* memoryMap = m_pMemory->GetDisassembledMemoryMap();
-    // Memory::stDisassembleRecord* romMap = m_pMemory->GetDisassembledMemoryMap();
+bool Processor::Disassemble(uint16_t address)
+{    
+    Memory::stDisassembleRecord* memoryMap = m_pMemory->GetDisassembledMemoryMap();
+    Memory::stDisassembleRecord* romMap = m_pMemory->GetDisassembledMemoryMap();
     Memory::stDisassembleRecord* map = NULL;
-    
+
+    int offset = address;
+    int bank = 0;
+    if ((address & 0xC000) == 0x0000)
+    {
+        //define a method to get the current 0th index rom bank...possibly in CommonMemoryRule.cpp
+    }
 
 }
 

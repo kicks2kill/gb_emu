@@ -3,6 +3,7 @@
         "xstring": "cpp",
         "istream": "cpp",
         "vector": "c",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "iosfwd": "c"
     }
 }
