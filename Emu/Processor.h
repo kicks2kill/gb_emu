@@ -10,6 +10,7 @@
 #include "definitions.h"
 #include "RegisterSixteenBit.h"
 
+#include "Processor_inlined.h"
 class Memory;
 
 class Processor
@@ -55,6 +56,7 @@ public:
     void SaveState(std::ostream& stream);
     void LoadState(std::istream& stream);
     ProcessorState* GetState();
+    bool Disassemble(uint16_t address);
     bool BreakpointHit();
 
 private:
@@ -661,57 +663,5 @@ private:
     void OPCodeCB0xFE();
     void OPCodeCB0xFF();
 };
-
-/*
-    Move these into an inlined header 
-*/
-inline int Processor::AdjustedCycles(int cycles)
-{
-    if (!cycles) return cycles;
-    return cycles >> m_iSpeedMultiplier;
-}
-
-inline Processor::Interrupts Processor::InterruptPending()
-{
-    uint8_t ie_reg = m_pMemory->Retrieve(0xFFFF);
-    uint8_t if_reg = m_pMemory->Retrieve(0xFF0F);
-    uint8_t ie_if = if_reg & ie_reg;
-
-    if((ie_if & 0x1F) == 0)
-    {
-        return None_Interrupt;
-    }
-    else if ((ie_if & 0x01) && (m_iInterruptDelayCycles = 0))
-    {
-        return VBlank_Interrupt;
-    }
-    else if (ie_if & 0x02)
-    {
-        return LCDSTAT_Interrupt;
-    }
-    else if (ie_if & 0x04)
-    {
-        return Timer_Interrupt;
-    }
-    else if (ie_if & 0x08)
-    {
-        return Serial_Interrupt;
-    }
-    else if(ie_if & 0x10)
-    {
-        return Joypad_Interrupt;
-    }
-    return None_Interrupt;
-}
-
-inline void Processor::RequestInterrupt(Interrupts interrupt)
-{
-    m_pMemory->Load(0xFF0F, m_pMemory->Retrieve(0xFF0F) | interrupt);
-
-    if((interrupt == VBlank_Interrupt) && !m_bCGBSpeed)
-    {
-        m_iInterruptDelayCycles = 4;
-    }
-}
 
 #endif

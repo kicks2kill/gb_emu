@@ -12,7 +12,7 @@
 #include <vector>
 
 class Processor;
-class MemoryRule;
+class MemoryRules;
 
 class Memory
 {
@@ -49,6 +49,8 @@ public:
     void WriteCGBLCDWRAM(uint16_t addr, uint8_t value);   //LCD WRAM
     void SwitchCGBLCDWRAM(uint8_t value);                 //LCD WRAM
     uint8_t Retrieve(uint16_t addr);
+    stDisassembleRecord* GetDisassembledMemoryMap();
+    stDisassembleRecord* GetDisassembledROMMemoryMap();
     
 
 private:
@@ -56,10 +58,10 @@ private:
     // Video* m_pVideo;
     CommonMemoryRule* m_pCommonMemoryRule;
     // IORegisterMemoryRule* m_pIORegisterMemoryRule;
-    MemoryRule* m_pCurrentMemoryRule;
+    MemoryRules* m_pCurrentMemoryRule;
     uint8_t* m_pMap;
     stDisassembleRecord* m_pDisassembledMap;
-    stDisassembleRecord* m_pDiassembledROMMap;
+    stDisassembleRecord* m_pDisassembledROMMap;
     std::vector<stDisassembleRecord*> m_BreakpointsInMap;
     stDisassembleRecord* m_pRunToBreakpoint;
     bool m_bCGB;

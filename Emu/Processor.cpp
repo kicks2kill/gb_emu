@@ -147,14 +147,66 @@ void Processor::UpdateTimers()
         div++;
         m_pMemory->Load(0xFF04,div);
     }
-    //TODO add tac and frequency
+    
+    uint8_t tac = m_pMemory->Retrieve(0xFF07);
+
+    if(tac & 0x04) //is running or not
+    {
+        m_iTIMACycles += m_iCurrentClockCycles;
+
+        unsigned int freq = 0;
+
+        switch(tac & 0x03)
+        {
+            case 0:
+                freq = AdjustedCycles(1024);
+                break;
+            case 1:
+                freq = AdjustedCycles(16);
+                break;
+            case 2:
+                freq = AdjustedCycles(64);
+                break;
+            case 3:
+                freq = AdjustedCycles(256);
+                break;
+        }
+
+        while(m_iTIMACycles >= freq)
+        {
+            m_iTIMACycles -= freq;
+            uint8_t tima = m_pMemory->Retrieve(0xFF05);
+
+            if(tima == 0xFF)
+            {
+                tima = m_pMemory->Retrieve(0xFF06);
+                RequestInterrupt(Timer_Interrupt);
+            }
+            else
+                tima++;
+
+            m_pMemory->Load(0xFF05, tima);
+        }
+    }
 }
 
 void Processor::UpdateSerial()
 {
+   uint8_t sc = m_pMemory->Retrieve(0xFF02);
+
     //TODO
+   
 }
 
+
+void Processor::Disassemble(uint16_t address)
+{    //   //Need to define a new method in Memory for this.
+    // Memory::stDisassembleRecord* memoryMap = m_pMemory->GetDisassembledMemoryMap();
+    // Memory::stDisassembleRecord* romMap = m_pMemory->GetDisassembledMemoryMap();
+    Memory::stDisassembleRecord* map = NULL;
+    
+
+}
 
 
 void Processor::InitOPCodeFunctors()
