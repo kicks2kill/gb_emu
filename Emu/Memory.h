@@ -40,8 +40,10 @@ public:
     void MemoryDump(const char* szFilePath);
     void Load(uint16_t addr, uint8_t value);
     CommonMemoryRule* GetCurrentRule();
+
     uint8_t* GetMemoryMap();
     uint8_t Read(uint16_t addr);
+    uint8_t* GetRAM();
     void WriteCGBLCDRAM(uint16_t addr, uint8_t value);    //LCD RAM
     uint8_t ReadCGBLCDRAM(uint16_t addr, bool forceBank); //LCD RAM
     void SwitchCGBLCDRAM(uint8_t value);                  //LCD RAM
@@ -51,6 +53,9 @@ public:
     uint8_t Retrieve(uint16_t addr);
     stDisassembleRecord* GetDisassembledMemoryMap();
     stDisassembleRecord* GetDisassembledROMMemoryMap();
+    std::vector<stDisassembleRecord*>* GetBreakpoints();
+    stDisassembleRecord* GetRunToBreakpoint();
+    void SetRunToBreakpoint(stDisassembleRecord* pBreakpoint);
     
 
 private:

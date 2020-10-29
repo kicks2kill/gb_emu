@@ -20,6 +20,17 @@ public:
    virtual uint8_t PerformRead(uint16_t address);
    virtual void PerformWrite(uint16_t address, uint8_t value);
    virtual void Reset(bool bCGB);
+   virtual size_t GetRamSize();
+   virtual size_t GetRTCSize();
+   virtual uint8_t* GetRAMBanks();
+   virtual uint8_t* GetCurrentRamBank();
+   virtual int GetCurrentRAMBankIndex();
+   virtual int GetCurrentROMBankIndex();
+   virtual uint8_t* GetROMBank0();
+   virtual int GetCurrentROMBank0Index();
+   virtual uint8_t* GetROMBank1();
+   virtual int GetCurrentROMBank1Index();
+   virtual uint8_t* GetRTCMemory();
 
 private:
    Memory* m_pMemory;

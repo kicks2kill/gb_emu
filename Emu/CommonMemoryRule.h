@@ -26,17 +26,6 @@ public:
     virtual void SaveRAM(std::ostream &file);
     virtual bool LoadRAM(std::istream &file, int32_t fileSize);
     virtual void SetRamChanged(RamChangedCallback callback);
-    virtual size_t GetRamSize();
-    virtual size_t GetRTCSize();
-    virtual uint8_t* GetRAMBanks();
-    virtual uint8_t* GetCurrentRamBank();
-    virtual int GetCurrentRAMBankIndex();
-    virtual int GetCurrentROMBankIndex();
-    virtual uint8_t* GetROMBank0();
-    virtual int GetCurrentROMBank0Index();
-    virtual uint8_t* GetROMBank1();
-    virtual int GetCurrentROMBank1Index();
-    virtual uint8_t* GetRTCMemory();
     virtual void SaveState(std::ostream& stream);
     virtual void LoadState(std::istream& stream);
 

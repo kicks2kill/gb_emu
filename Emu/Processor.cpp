@@ -285,7 +285,43 @@ bool Processor::Disassemble(uint16_t address)
                 strcat(map[offset].bytes, " ");
             }
         }
-        //need to switch on info type
+        switch(info.type)
+        {
+            case 0:
+                strcpy(map[offset].name, info.name);
+                break;
+            case 1:
+                sprintf(map[offset].name, info.name, bytes[1]);
+                break;
+            case 2: 
+                sprintf(map[offset].name, info.name, (int8_t)bytes[1]);
+                break;
+            case 3:
+                sprintf(map[offset].name, info.name, address + info.size + (int8_t)bytes[1],(int8_t)bytes[1]);
+                break;
+            case 4:
+                sprintf(map[offset].name, info.name, bytes[1], kRegisterNames[bytes[1]]);
+                break;
+            default:
+                strcpy(map[offset].name, "Unable to parse: error");
+        }
+    }
+    Memory::stDisassembleRecord* runTillBreakpoint = m_pMemory->GetRunToBreakpoint();
+    std::vector<Memory::stDisassembleRecord*>* breakpoints = m_pMemory->GetBreakpoints();
+
+    if(IsValidPointer(runTillBreakpoint))
+    {
+        if(runTillBreakpoint == &map[offset])
+        {
+            m_pMemory->SetRunToBreakpoint(NULL);
+            return true;
+        }
+        else
+            return false;
+    }
+    else
+    {
+        //define criteria for breakpoints
     }
 }
 
