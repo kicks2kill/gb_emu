@@ -210,11 +210,73 @@ bool Processor::Disassemble(uint16_t address)
     int bank = 0;
     if ((address & 0xC000) == 0x0000)
     {
-        //define a method to get the current 0th index rom bank...possibly in CommonMemoryRule.cpp
+       bank = m_pMemory->GetCurrentRule()->GetCurrentROMBank0Index();
+       offset = (0x4000 * bank) + address;
+       map = romMap;
     }
+    else if ((address & 0xC000) == 0x4000)
+    {
+        bank = m_pMemory->GetCurrentRule()->GetCurrentROMBank1Index();
+        offset = (0x4000 * bank) + (address & 0x3FFF);
+        map = romMap;
+    }
+    else 
+    {
+        map = memoryMap;
+    }
+    if(map[offset].sz == 0)
+    {
+        map[offset].bank = bank;
+        map[offset].address = address;
+        
+        uint8_t bytes[4];
+        for (int i = 0; i < 4; i++)
+            bytes[i] = m_pMemory->Read(address + 1);
 
+        uint8_t opcode = bytes[0];
+        bool b = false;
+        if(opcode == 0xCB)
+        {
+            b = true;
+            opcode = bytes[1];
+        }
+        //complete this
+    }
 }
 
+
+bool Processor::BreakpointHit()
+{
+    return m_bBreakpointHit;
+}
+
+//Need to write SaveState and LoadState
+
+
+void Processor::SaveState(std::ostream& stream)
+{
+    using namespace std;
+
+    uint16_t hl = HL.GetValue();
+    uint16_t sp = SP.GetValue();
+    uint16_t pc = PC.GetValue();
+    uint16_t af = AF.GetValue();
+    uint16_t de = DE.GetValue();
+    uint16_t bc = BC.GetValue();
+
+    /*
+        Return a value of type new_type -> This expression does not compile to any CPU instructions.
+        It is purely a compile-time directive which instructs the compiler to treat the expression as if it had the type new_type
+    */
+    stream.write(reinterpret_cast<const char*> (&hl), sizeof(hl));
+    stream.write(reinterpret_cast<const char*> (&sp), sizeof(sp));
+    stream.write(reinterpret_cast<const char*> (&pc), sizeof(pc));
+    stream.write(reinterpret_cast<const char*> (&af), sizeof(af));
+    stream.write(reinterpret_cast<const char*> (&de), sizeof(de));
+    stream.write(reinterpret_cast<const char*> (&bc), sizeof(bc));
+
+    //need to also write all of the cycle, IME, interrupts and speed properties
+}
 
 void Processor::InitOPCodeFunctors()
 {

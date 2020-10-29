@@ -39,7 +39,7 @@ public:
     void Write(uint16_t addr, uint8_t value);
     void MemoryDump(const char* szFilePath);
     void Load(uint16_t addr, uint8_t value);
-    MemoryRules* GetCurrentRule();
+    CommonMemoryRule* GetCurrentRule();
     uint8_t* GetMemoryMap();
     uint8_t Read(uint16_t addr);
     void WriteCGBLCDRAM(uint16_t addr, uint8_t value);    //LCD RAM
