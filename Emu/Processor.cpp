@@ -275,7 +275,62 @@ void Processor::SaveState(std::ostream& stream)
     stream.write(reinterpret_cast<const char*> (&de), sizeof(de));
     stream.write(reinterpret_cast<const char*> (&bc), sizeof(bc));
 
-    //need to also write all of the cycle, IME, interrupts and speed properties
+    stream.write(reinterpret_cast<const char*> (&m_bIME), sizeof(m_bIME));
+    stream.write(reinterpret_cast<const char*> (&m_bHalt), sizeof(m_bHalt));
+    stream.write(reinterpret_cast<const char*> (&m_bBranchTaken), sizeof(m_bBranchTaken));
+    stream.write(reinterpret_cast<const char*> (&m_bSkipPCBug), sizeof(m_bSkipPCBug));
+    stream.write(reinterpret_cast<const char*> (&m_iCurrentClockCycles), sizeof(m_iCurrentClockCycles));
+    stream.write(reinterpret_cast<const char*> (&m_iDIVCycles), sizeof(m_iDIVCycles));
+    stream.write(reinterpret_cast<const char*> (&m_iTIMACycles), sizeof(m_iTIMACycles));
+    stream.write(reinterpret_cast<const char*> (&m_iSerialBit), sizeof(m_iSerialBit));
+    stream.write(reinterpret_cast<const char*> (&m_iSerialCycles), sizeof(m_iSerialCycles));
+    stream.write(reinterpret_cast<const char*> (&m_iIMECycles), sizeof(m_iIMECycles));
+    stream.write(reinterpret_cast<const char*> (&m_iUnhaltCycles), sizeof(m_iUnhaltCycles));
+    stream.write(reinterpret_cast<const char*> (&m_iInterruptDelayCycles), sizeof(m_iInterruptDelayCycles));
+    stream.write(reinterpret_cast<const char*> (&m_bCGBSpeed), sizeof(m_bCGBSpeed));
+    stream.write(reinterpret_cast<const char*> (&m_iSpeedMultiplier), sizeof(m_iSpeedMultiplier));
+    stream.write(reinterpret_cast<const char*> (&m_iReadCache), sizeof(m_iReadCache));
+}
+
+void Processor::LoadState(std::istream& stream)
+{
+    using namespace std;
+    uint16_t hl;
+    uint16_t sp;
+    uint16_t pc;
+    uint16_t af;
+    uint16_t de;
+    uint16_t bc;
+
+    stream.read(reinterpret_cast<char*> (&hl),sizeof(hl));
+    stream.read(reinterpret_cast<char*> (&sp), sizeof(sp));
+    stream.read(reinterpret_cast<char*> (&pc), sizeof(pc));
+    stream.read(reinterpret_cast<char*> (&af), sizeof(af));
+    stream.read(reinterpret_cast<char*> (&de), sizeof(de));
+    stream.read(reinterpret_cast<char*> (&bc), sizeof(bc));
+
+    HL.SetValue(hl);
+    SP.SetValue(sp);
+    PC.SetValue(pc);
+    AF.SetValue(af);
+    DE.SetValue(de);
+    BC.SetValue(bc);
+
+    stream.read(reinterpret_cast<char*> (&m_bIME), sizeof(m_bIME));
+    stream.read(reinterpret_cast<char*> (&m_bHalt), sizeof(m_bHalt));
+    stream.read(reinterpret_cast<char*> (&m_bBranchTaken), sizeof(m_bBranchTaken));
+    stream.read(reinterpret_cast<char*> (&m_bSkipPCBug), sizeof(m_bSkipPCBug));
+    stream.read(reinterpret_cast<char*> (&m_iCurrentClockCycles), sizeof(m_iCurrentClockCycles));
+    stream.read(reinterpret_cast<char*> (&m_iDIVCycles), sizeof(m_iDIVCycles));
+    stream.read(reinterpret_cast<char*> (&m_iTIMACycles), sizeof(m_iTIMACycles));
+    stream.read(reinterpret_cast<char*> (&m_iSerialBit), sizeof(m_iSerialBit));
+    stream.read(reinterpret_cast<char*> (&m_iSerialCycles), sizeof(m_iSerialCycles));
+    stream.read(reinterpret_cast<char*> (&m_iIMECycles), sizeof(m_iIMECycles));
+    stream.read(reinterpret_cast<char*> (&m_iUnhaltCycles), sizeof(m_iUnhaltCycles));
+    stream.read(reinterpret_cast<char*> (&m_iInterruptDelayCycles), sizeof(m_iInterruptDelayCycles));
+    stream.read(reinterpret_cast<char*> (&m_bCGBSpeed), sizeof(m_bCGBSpeed));
+    stream.read(reinterpret_cast<char*> (&m_iSpeedMultiplier), sizeof(m_iSpeedMultiplier));
+    stream.read(reinterpret_cast<char*> (&m_iReadCache), sizeof(m_iReadCache));
 }
 
 void Processor::InitOPCodeFunctors()
