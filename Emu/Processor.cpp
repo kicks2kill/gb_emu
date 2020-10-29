@@ -194,7 +194,28 @@ void Processor::UpdateSerial()
 {
    uint8_t sc = m_pMemory->Retrieve(0xFF02);
 
-    //TODO
+    if(IsSetBit(sc, 7) && IsSetBit(sc,0))
+    {
+        m_iSerialCycles += m_iCurrentClockCycles;
+
+        if(m_iSerialBit < 0)
+        {
+            m_iSerialBit = 0;
+            m_iSerialCycles = 0;
+            return;
+        }
+        int serial_cycles = AdjustedCycles(512);
+        if(m_iSerialCycles >= serial_cycles)
+        {   //should there be another check here?
+            uint8_t sb = m_pMemory->Retrieve(0xFF01);
+            sb <<= 1;
+            sb |= 0x01;
+            m_pMemory->Load(0xFF01, sb);
+
+            m_iSerialCycles -= serial_cycles;
+            m_iSerialBit++;
+        }
+    }
    
 }
 
@@ -240,7 +261,31 @@ bool Processor::Disassemble(uint16_t address)
             b = true;
             opcode = bytes[1];
         }
-        //complete this
+       stOPCodeInfo info = b ? kOPCodeCBNames[opcode] : kOPCodeNames[opcode];
+       
+       map[offset].sz = info.size;
+
+       map[offset].bytes[0] = 0;
+
+        for(int i = 0; i < 4; i++)
+        {
+            if(i < info.size)
+            {
+                char value[8];
+                sprintf(value, "%02X",bytes[i]);
+                strcat(map[offset].bytes, value);
+            } 
+            else 
+            {
+                strcat(map[offset].bytes, " ");
+            }
+
+            if(i < 3)
+            {
+                strcat(map[offset].bytes, " ");
+            }
+        }
+        //need to switch on info type
     }
 }
 
@@ -249,9 +294,6 @@ bool Processor::BreakpointHit()
 {
     return m_bBreakpointHit;
 }
-
-//Need to write SaveState and LoadState
-
 
 void Processor::SaveState(std::ostream& stream)
 {
@@ -331,6 +373,32 @@ void Processor::LoadState(std::istream& stream)
     stream.read(reinterpret_cast<char*> (&m_bCGBSpeed), sizeof(m_bCGBSpeed));
     stream.read(reinterpret_cast<char*> (&m_iSpeedMultiplier), sizeof(m_iSpeedMultiplier));
     stream.read(reinterpret_cast<char*> (&m_iReadCache), sizeof(m_iReadCache));
+}
+
+Processor::ProcessorState* Processor::GetState()
+{
+    return &m_ProcessorState;
+}
+
+void Processor::SetGameSharkCheat(const char* szCheat)
+{
+    std::string cheat(szCheat);
+    for(std::string::iterator i = cheat.begin(); cheat.end() != i; ++i)
+        *i = toupper(*i);
+
+    if(cheat.length() == 8)
+    {
+        GameSharkCode gsc;
+        gsc.type = AsHex(cheat[0]) << 4 | AsHex(cheat[1]);
+        gsc.value = (AsHex(cheat[2]) << 4 | AsHex(cheat[3])) & 0xFF;
+        gsc.address = (AsHex(cheat[4]) << 4 | AsHex(cheat[5]) | AsHex(cheat[6]) << 12 | AsHex(cheat[7]) << 8) & 0xFFFF;
+        m_GameSharkList.push_back(gsc);
+    }
+}
+
+void Processor::ClearGameSharkCheats()
+{
+    m_GameSharkList.clear();
 }
 
 void Processor::InitOPCodeFunctors()

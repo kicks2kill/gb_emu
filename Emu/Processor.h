@@ -58,6 +58,8 @@ public:
     ProcessorState* GetState();
     bool Disassemble(uint16_t address);
     bool BreakpointHit();
+    void ClearGameSharkCheats();
+    void SetGameSharkCheat(const char* szCheat);
 
 private:
     typedef void (Processor::*OPCptr) (void);
@@ -88,6 +90,14 @@ private:
     int m_iSpeedMultiplier;
     int m_iAccurateOpCodeState;
     uint8_t m_iReadCache;
+    struct GameSharkCode
+    {        
+        uint8_t type;
+        uint16_t address;
+        uint8_t value;
+    };
+    std::list<GameSharkCode> m_GameSharkList;
+
     ProcessorState m_ProcessorState;
 
 //This style of fetching OP Codes is borrowed from GearBoy.  Please refer to them on how this is handled.
