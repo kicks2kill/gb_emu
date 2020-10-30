@@ -89,7 +89,7 @@ uint8_t Processor::Tick()
     m_iCurrentClockCycles = 0;
     m_bBreakpointHit = false;
 
-    if(m_iAccurateOpCodeState == 0 && m_bHalt)
+    if(m_iAccurateOPCodeState == 0 && m_bHalt)
     {
         m_iCurrentClockCycles += AdjustedCycles(4);
 
