@@ -10,8 +10,6 @@
 #include "opcode_names.h"
 #include "opcode_timing.h"
 
-
-
 Processor::Processor(Memory* pMemory)
 {
     m_pMemory = pMemory;

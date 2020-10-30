@@ -83,7 +83,7 @@ inline uint8_t Processor::FetchOPCode()
 
 inline bool Processor::DuringOpCode() const
 {
-    return m_iAccurateOpCodeState != 0;
+    return m_iAccurateOPCodeState != 0;
 }
 
 inline void Processor::InvalidOPCode()
@@ -91,6 +91,35 @@ inline void Processor::InvalidOPCode()
     Log("**** Invalid OP Code used");
 }
 
+inline bool Processor::Halted() const
+{
+    return m_bHalt;
+}
+
+
+inline bool Processor::CGBSpeed() const 
+{
+    return m_bCGBSpeed;
+}
+
+
+inline void Processor::AddCycles(unsigned int cycles)
+{
+    m_iCurrentClockCycles += cycles;
+}
+
+inline void Processor::ClearAllFlags()
+{
+    SetFlag(FLAG_NONE);
+}
+
+inline void Processor::SetFlag(uint8_t flag)
+{
+    AF.SetLow(flag);
+}
+
+
+//  // define methods for checking if flag is set, (un)toggling and flipping
 
 /*
     Begin inserting OP Code functions... this may take awhile.

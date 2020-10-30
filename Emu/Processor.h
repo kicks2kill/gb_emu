@@ -11,6 +11,7 @@
 #include "RegisterSixteenBit.h"
 
 #include "Processor_inlined.h"
+
 class Memory;
 
 class Processor
