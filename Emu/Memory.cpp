@@ -67,9 +67,59 @@ void Memory::SetProcessor(Processor* pProcessor)
     m_pProcessor = pProcessor;
 }
 
+void Memory::MemoryDump(const char* szFilePath)
+{
+    std::ofstream myFile(szFilePath, std::ios::out | std::ios::trunc);
+
+    if(myFile.is_open())
+    {
+        for(int i = 0; i < 65536; i++)
+        {
+            if(m_pDisassembledMap[i].name[0] != 0)
+            {
+                myFile << "0x" << std::hex << i << "\t" << m_pDisassembledMap[i].name << std::endl;
+                i += (m_pDisassembledMap[i].sz - 1);
+            }
+            else 
+            {
+                myFile << "0x" << std::hex << i << "\t [0x" << std::hex << (int)m_pMap[i] << "]" << std::endl;
+            }
+        }
+        myFile.close();
+    }
+}
+
+uint8_t* Memory::GetROM0()
+{
+    return m_pCurrentMemoryRule->GetROMBank0();
+}
+
+uint8_t* Memory::GetROM1()
+{
+    return m_pCurrentMemoryRule->GetROMBank1();
+}
+
+uint8_t* Memory::GetVRAM()
+{
+    if(m_bCGB)
+        return (m_iCurrentLCDRAMBank == 1) ? m_pLCDRAMBank1 : m_pMap + 0x8000;
+    else
+        return m_pMap + 0x8000;
+}
+
 uint8_t* Memory::GetRAM()
 {
     return m_pCurrentMemoryRule->GetCurrentRamBank();
+}
+
+uint8_t* Memory::GetWRAM0()
+{
+    return m_bCGB ? m_pWRAMBanks : m_pMap + 0xC000;
+}
+
+uint8_t* Memory::GetWRAM1()
+{
+    return m_bCGB ? m_pWRAMBanks + (0x1000 * m_iCurrentWRAMBank) : m_pMap + 0xD000;
 }
 
 std::vector<Memory::stDisassembleRecord*>* Memory::GetBreakpoints()
@@ -82,3 +132,7 @@ Memory::stDisassembleRecord* Memory::GetRunToBreakpoint()
     return m_pRunToBreakpoint;
 }
 
+void Memory::SetRunToBreakpoint(Memory::stDisassembleRecord* pBreakpoint)
+{
+    m_pRunToBreakpoint = pBreakpoint;
+}

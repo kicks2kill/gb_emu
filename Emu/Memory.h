@@ -62,7 +62,7 @@ public:
     uint8_t* GetRAM();
     uint8_t* GetWRAM0();
     uint8_t* GetWRAM1();
-    
+    //define GDMA and HDMA declaration/definition
 
     
 
