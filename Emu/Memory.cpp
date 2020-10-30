@@ -37,7 +37,27 @@ void Memory::Reset(bool bCGB)
 
     for (int i = 0; i < MAX_ROM_SIZE; i++)
     {
-        //reset ROMMAP data 
+        m_pDisassembledROMMap[i].address = i & 0x3FFF;
+        m_pDisassembledROMMap[i].bank = i >> 14;
+        m_pDisassembledROMMap[i].name[0] = 0;
+        m_pDisassembledROMMap[i].bytes[0] = 0;
+        m_pDisassembledROMMap[i].sz = 0;
+    }
+
+    for( int i = 0; i < 65536; i++)
+    {
+        m_pMap[i] = 0x00;
+        m_pDisassembledMap[i].address = 0;
+        m_pDisassembledMap[i].bank = 0;
+        m_pDisassembledMap[i].name[0] = 0;
+        m_pDisassembledMap[i].bytes[0] = 0;
+        m_pDisassembledMap[i].sz = 0;
+
+        //if i >= and < ... ?
+    }
+    if(m_bCGB)
+    {
+        //HDMA stuff?
     }
 
 }
