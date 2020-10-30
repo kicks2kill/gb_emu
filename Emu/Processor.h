@@ -88,7 +88,7 @@ private:
     int m_iUnhaltCycles;
     int m_iInterruptDelayCycles;
     int m_iSpeedMultiplier;
-    int m_iAccurateOpCodeState;
+    int m_iAccurateOPCodeState;
     uint8_t m_iReadCache;
     struct GameSharkCode
     {        
