@@ -9,7 +9,6 @@
 #include <list>
 #include "definitions.h"
 #include "RegisterSixteenBit.h"
-
 #include "Processor_inlined.h"
 
 class Memory;
