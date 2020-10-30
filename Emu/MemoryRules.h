@@ -11,7 +11,9 @@
 #include <vector>
 
 class Memory;
-
+class Processor;
+class Cartridge;
+class Audio;
 class MemoryRules
 {
 public:
@@ -19,10 +21,13 @@ public:
    virtual ~MemoryRules();
    virtual uint8_t PerformRead(uint16_t address);
    virtual void PerformWrite(uint16_t address, uint8_t value);
+   virtual void SaveRam(std::ostream &file);
+   virtual bool LoadRam(std::istream &file, int32_t fileSize);
    virtual void Reset(bool bCGB);
    virtual size_t GetRamSize();
    virtual size_t GetRTCSize();
    virtual uint8_t* GetRAMBanks();
+   virtual void SetRamChanged(RamChangedCallback callback);
    virtual uint8_t* GetCurrentRamBank();
    virtual int GetCurrentRAMBankIndex();
    virtual int GetCurrentROMBankIndex();
@@ -34,7 +39,11 @@ public:
 
 private:
    Memory* m_pMemory;
+   Processor* m_pProcessor;
+   Cartridge* m_pCartridge;
+   Audio* m_pAudio;
    bool m_bCGB;
+   RamChangedCallback m_pRamChangedCallback;
 };
 
 inline uint8_t MemoryRules::PerformRead(uint16_t addr)

@@ -15,6 +15,33 @@ Memory::Memory()
     //TODO
 }
 
+void Memory::Init()
+{
+    m_pMap = new uint8_t[65536];
+    m_pWRAMBanks = new uint8_t[0x8000];
+    m_pLCDRAMBank1 = new uint8_t[0x2000];
+    m_pDisassembledMap = new stDisassembleRecord[65536];
+    m_pDisassembledROMMap = new stDisassembleRecord[MAX_ROM_SIZE];
+    m_BreakpointsInMap.clear();
+    InitPointer(m_pRunToBreakpoint);
+    Reset(false);
+}
+
+void Memory::Reset(bool bCGB)
+{
+    m_bCGB = bCGB;
+    InitPointer(m_pCommonMemoryRule);
+    InitPointer(m_pCurrentMemoryRule);
+    m_iCurrentWRAMBank = 1;
+    m_iCurrentLCDRAMBank = 0;
+
+    for (int i = 0; i < MAX_ROM_SIZE; i++)
+    {
+        //reset ROMMAP data 
+    }
+
+}
+
 void Memory::SetProcessor(Processor* pProcessor)
 {
     m_pProcessor = pProcessor;

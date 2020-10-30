@@ -5,7 +5,21 @@
 
 #include "MemoryRules.h"
 
+void MemoryRules::SaveRam(std::ostream&)
+{
+    Log("MemoryRule::SaveRam not implemented");
+}
 
+bool MemoryRules::LoadRam(std::istream&, int32_t)
+{
+    Log("MemoryRule::LoadRam not implemented");
+    return false;
+}
+
+void MemoryRules::SetRamChanged(RamChangedCallback callback) 
+{
+    m_pRamChangedCallback = callback;
+}
 
 size_t MemoryRules::GetRamSize()
 {

@@ -56,6 +56,14 @@ public:
     std::vector<stDisassembleRecord*>* GetBreakpoints();
     stDisassembleRecord* GetRunToBreakpoint();
     void SetRunToBreakpoint(stDisassembleRecord* pBreakpoint);
+    uint8_t* GetROM0();
+    uint8_t* GetROM1();
+    uint8_t* GetVRAM();
+    uint8_t* GetRAM();
+    uint8_t* GetWRAM0();
+    uint8_t* GetWRAM1();
+    
+
     
 
 private:
