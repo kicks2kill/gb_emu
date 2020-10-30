@@ -42,8 +42,41 @@ inline uint8_t Memory::Read(uint16_t address)
 
     }
 }
-//  // Write a 'write' method here
 
+inline void Memory::Write(uint16_t address, uint8_t value)
+{
+    switch(address & 0xE000)
+    {
+        case 0x0000:
+        case 0x2000:
+        case 0x4000:
+        case 0x6000:
+        {
+            return m_pCurrentMemoryRule->PerformWrite(address,value);
+        }
+        case 0x8000:
+        {
+            return m_pCommonMemoryRule->PerformWrite(address,value);
+        }
+        case 0xA000:
+        {
+            return m_pCurrentMemoryRule->PerformWrite(address,value);
+        }
+        case 0xC0000:
+        case 0xE0000:
+        {
+            if(address < 0xFF00)
+                return m_pCommonMemoryRule->PerformWrite(address,value);
+            // else
+                // return m_pIORegistersMemoryRule->PerformRead(address);
+        }
+        default:
+        {
+            Load(address,value);
+            break;
+        }
+    }
+}
 
 inline Memory::stDisassembleRecord* Memory::GetDisassembledMemoryMap()
 {
