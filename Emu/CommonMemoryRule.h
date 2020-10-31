@@ -82,8 +82,8 @@ inline void CommonMemoryRule::PerformWrite(uint16_t address, uint8_t value)
                 m_pMemory->Load(address + 0x2000, value);
             }
             else if(m_bCGB)
-            {   //define this
-                //m_pMemory->WriteCGBWRAM(address,value);
+            {   
+                m_pMemory->WriteCGBWRAM(address,value);
             }
             else
             {

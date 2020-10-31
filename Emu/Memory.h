@@ -40,10 +40,11 @@ public:
     void MemoryDump(const char* szFilePath);
     void Load(uint16_t addr, uint8_t value);
     MemoryRules* GetCurrentRule();
-
     uint8_t* GetMemoryMap();
     uint8_t Read(uint16_t addr);
     uint8_t* GetRAM();
+    uint8_t ReadCGBWRAM(uint16_t address);               //CGB WRAM
+    void WriteCGBWRAM(uint16_t address, uint8_t value);   //CGB WRAM
     void WriteCGBLCDRAM(uint16_t addr, uint8_t value);    //LCD RAM
     uint8_t ReadCGBLCDRAM(uint16_t addr, bool forceBank); //LCD RAM
     void SwitchCGBLCDRAM(uint8_t value);                  //LCD RAM

@@ -78,6 +78,23 @@ inline void Memory::Write(uint16_t address, uint8_t value)
     }
 }
 
+inline void Memory::WriteCGBWRAM(uint16_t address, uint8_t value)
+{
+    if(address < 0xD000)
+        m_pWRAMBanks[(address - 0xC000)] = value;
+    else
+        m_pWRAMBanks[(address - 0xD000) + (0x1000 * m_iCurrentWRAMBank)] = value;
+}
+
+inline uint8_t Memory::ReadCGBWRAM(uint16_t address)
+{
+     if(address < 0xD000)
+        return m_pWRAMBanks[(address - 0xC000)];
+    else
+        return m_pWRAMBanks[(address - 0xD000) + (0x1000 * m_iCurrentWRAMBank)];
+}
+
+
 inline Memory::stDisassembleRecord* Memory::GetDisassembledMemoryMap()
 {
     return m_pDisassembledMap;
