@@ -46,3 +46,4 @@ void CommonMemoryRule::LoadState(std::istream&)
 {
     Log("CommonMemoryRule::LoadState not implemented");
 }
+

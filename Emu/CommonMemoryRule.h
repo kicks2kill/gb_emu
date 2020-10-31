@@ -10,9 +10,6 @@
 #include <vector>
 
 class Memory;
-class Cartridge;
-class Audio;
-class Processor;
 
 class CommonMemoryRule
 {
@@ -31,11 +28,67 @@ public:
 
 protected:
     Memory* m_pMemory;
-    Processor* m_pProcessor;
-    Cartridge* m_pCartridge;
-    Audio* m_pAudio;
     bool m_bCGB;
     RamChangedCallback m_pRamChangedCallback;
 };
 
+
+
+inline uint8_t CommonMemoryRule::PerformRead(uint16_t address)
+{
+    if(m_bCGB)
+    {
+        switch(address & 0xE000)
+        {
+            case 0x8000:
+            {
+                return m_pMemory->ReadCGBLCDRAM(address,false);
+            }
+            case 0xC000:
+            {
+                return m_pMemory->ReadCGBWRAM(address);
+            }
+        }
+    }
+    else if(address >= 0xFEA0 && address < 0xFF00)
+    {
+        return (((address + ((address >> 4) - 0x0FEA)) >> 2) & 1) ? 0x00 : 0xFF);
+    }
+    return m_pMemory->Retrieve(address);
+}
+//  // work on this method
+inline void CommonMemoryRule::PerformWrite(uint16_t address, uint8_t value)
+{
+    switch(address & 0xE000)
+    {
+        case 0x8000:
+        {
+            if(m_bCGB)
+                m_pMemory->WriteCGBLCDRAM(address,value);
+            else
+                m_pMemory->Load(address, value);
+            break;
+        }
+        case 0xC000:
+        {
+            if(address < 0xDE00)
+            {
+                if(m_bCGB)
+                    m_pMemory->WriteCGBLCDRAM(address,value);
+                else
+                    m_pMemory->Load(address, value);
+                m_pMemory->Load(address + 0x2000, value);
+            }
+            else if(m_bCGB)
+            {   //define this
+                //m_pMemory->WriteCGBWRAM(address,value);
+            }
+            else
+            {
+                m_pMemory->Load(address,value);
+            }
+            break;
+        }
+    }
+}
 #endif
