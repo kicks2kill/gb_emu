@@ -5,6 +5,16 @@
 
 #include "MemoryRules.h"
 
+MemoryRules::MemoryRules(Processor* pProcessor, Memory* pMemory, Cartridge* pCartridge, Audio* pAudio)
+{
+    m_pProcessor = pProcessor;
+    m_pMemory = pMemory;
+    m_pCartridge = pCartridge;
+    m_pAudio = pAudio;
+    m_bCGB = false;
+    InitPointer(m_pRamChangedCallback);
+}
+
 void MemoryRules::SaveRam(std::ostream&)
 {
     Log("MemoryRule::SaveRam not implemented");

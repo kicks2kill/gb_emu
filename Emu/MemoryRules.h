@@ -17,7 +17,7 @@ class Audio;
 class MemoryRules
 {
 public:
-   MemoryRules(Memory* pMemory);
+   MemoryRules(Processor* pProcessor, Memory* pMemory, Cartridge* pCartridge, Audio* pAudio);
    virtual ~MemoryRules();
    virtual uint8_t PerformRead(uint16_t address);
    virtual void PerformWrite(uint16_t address, uint8_t value);
@@ -37,7 +37,7 @@ public:
    virtual int GetCurrentROMBank1Index();
    virtual uint8_t* GetRTCMemory();
 
-private:
+protected:
    Memory* m_pMemory;
    Processor* m_pProcessor;
    Cartridge* m_pCartridge;
