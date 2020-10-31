@@ -10,6 +10,9 @@
 #include <vector>
 
 class Memory;
+class Processor;
+class Cartridge;
+class Audio;
 
 class CommonMemoryRule
 {
@@ -28,6 +31,9 @@ public:
 
 protected:
     Memory* m_pMemory;
+    Processor* m_pProcessor;
+    Cartridge* m_pCartridge;
+    Audio* m_pAudio;
     bool m_bCGB;
     RamChangedCallback m_pRamChangedCallback;
 };
@@ -49,10 +55,6 @@ inline uint8_t CommonMemoryRule::PerformRead(uint16_t address)
                 return m_pMemory->ReadCGBWRAM(address);
             }
         }
-    }
-    else if(address >= 0xFEA0 && address < 0xFF00)
-    {
-        return (((address + ((address >> 4) - 0x0FEA)) >> 2) & 1) ? 0x00 : 0xFF);
     }
     return m_pMemory->Retrieve(address);
 }
