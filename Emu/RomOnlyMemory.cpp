@@ -96,3 +96,42 @@ bool RomOnlyMemory::LoadRAM(std::istream &file, int32_t fileSize)
     
     return true;
 }
+
+size_t RomOnlyMemory::GetRAMSize()
+{
+    return m_pCartridge->GetRAMBankCount() * 0x2000;
+}
+
+uint8_t* RomOnlyMemory::GetRAMBanks()
+{
+    return m_pMemory->GetMemoryMap() + 0xA000;
+}
+
+uint8_t* RomOnlyMemory::GetCurrentRAMBank()
+{
+    return m_pMemory->GetMemoryMap() + 0xA000;
+}
+
+int RomOnlyMemory::GetCurrentRAMBankIndex()
+{
+    return 0;
+}
+uint8_t* RomOnlyMemory::GetROMBank0()
+{
+    return m_pMemory->GetMemoryMap() + 0x0000;
+}
+
+int RomOnlyMemory::GetCurrentROMBank0Index()
+{
+    return 0;
+}
+
+uint8_t* RomOnlyMemory::GetCurrentROMBank1()
+{
+    return m_pMemory->GetMemoryMap() + 0x4000;
+}
+
+int RomOnlyMemory::GetCurrentROMBank1Index()
+{
+    return 0;
+}
