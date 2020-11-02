@@ -38,6 +38,47 @@ void MBC1Memory::Reset(bool bCGB)
     m_CurrentRAMAddr = 0;
 }
 
+void MBC1Memory::SaveRAM(std::ostream& file)
+{
+    Log("MBC1Memory Saving RAM....");
+    Log("Attempting to save %d banks...", m_pCartridge->GetRAMBankCount());
+
+    uint32_t ramSize = m_pCartridge->GetRAMBankCount() * 0x2000; //times 8192
+
+    for( uint32_t i = 0; i < ramSize; i++)
+    {
+        uint8_t ramBytes = m_pRAMBanks[i];
+        file.write(reinterpret_cast<const char*>(&ramBytes),1);
+    }
+
+    Log("MBC1Memory save RAM complete");
+}
+
+bool MBC1Memory::LoadRAM(std::istream& file, int32_t fileSize)
+{
+    Log("MBC1Memory Loading RAM....");
+    Log("Attempting to load %d banks...", m_pCartridge->GetRAMBankCount());
+
+    int32_t ramSize = m_pCartridge->GetRAMBankCount() * 0x2000;
+    if((fileSize > 0) && (fileSize != ramSize))
+    {
+        Log("MBC1Memory is incorrect size. Expected size %d, but found %d",ramSize, fileSize);
+        return false;
+    }
+    else if(fileSize ==0)
+    {
+        //There should be some checking here.
+    }
+    for(int32_t i = 0; i < ramSize; i++)
+    {
+        uint8_t ramBytes = 0;
+        file.read(reinterpret_cast<char*>(&ramBytes),1);
+        m_pRAMBanks[i] = ramBytes;
+    }
+    Log("MBC1Memory loading RAM complete..");
+    return true;
+}
+
 void MBC1Memory::LoadState(std::istream& stream)
 {
     using namespace std;
@@ -66,3 +107,54 @@ void MBC1Memory::SaveState(std::ostream& stream)
     stream.write(reinterpret_cast<const char*>(&m_CurrentROMAddr), sizeof(m_CurrentROMAddr));
     stream.write(reinterpret_cast<const char*>(&m_CurrentRAMAddr), sizeof(m_CurrentRAMAddr));
 }
+
+size_t MBC1Memory::GetRAMSize()
+{
+    Log("MBC1Memory::GetRamSize not implemented");
+    return 0;
+}
+
+uint8_t* MBC1Memory::GetRAMBanks()
+{
+    Log("MBC1Memory::GetRAMBanks not implemented");
+    return NULL;
+}
+
+uint8_t* MBC1Memory::GetCurrentRAMBank()
+{
+    Log("MBC1Memory::GetCurrentRamBank not implemented");
+    return NULL;
+}
+
+
+int MBC1Memory::GetCurrentRAMBankIndex()
+{
+    Log("MBC1Memory::GetCurrentRAMBankIndex not implemented");
+    return NULL;
+}
+
+uint8_t* MBC1Memory::GetROMBank0()
+{
+    Log("MBC1Memory::GetROMbank0 not implemented");
+    return NULL;
+}
+
+
+int MBC1Memory::GetCurrentROMBank0Index()
+{
+    Log("MBC1Memory::GetROMBank0Index not implemented");
+    return 0;
+}
+
+uint8_t* MBC1Memory::GetCurrentROMBank1()
+{
+    Log("MBC1Memory::GetROMBank1 not implemented");
+    return NULL;
+}
+
+int MBC1Memory::GetCurrentROMBank1Index()
+{
+    Log("MBC1Memory::GetCurrentROMBank1Index not implemented");
+    return 0;
+}
+
