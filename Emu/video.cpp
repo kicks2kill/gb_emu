@@ -40,3 +40,16 @@ Video::~Video()
     SafeDeleteArray(m_pColorCacheBuffer);
     SafeDeleteArray(m_pFrameBuffer);
 }
+
+void Video::Init()
+{
+    m_pFrameBuffer = new uint8_t[GAMEBOY_WIDTH * GAMEBOY_HEIGHT];
+    m_pSpriteXCacheBuffer = new int[GAMEBOY_WIDTH * GAMEBOY_HEIGHT];
+    m_pColorCacheBuffer = new uint8_t[GAMEBOY_WIDTH * GAMEBOY_HEIGHT];
+    Reset(false); //define this
+}
+
+void Video::Reset(bool bCGB)
+{
+        //thinking I need to iterate through the width and height to get i
+}
