@@ -30,8 +30,20 @@ public:
     void UpdatePaletteAsSpecified(bool background, uint8_t value);
     void SetColorPalette(bool background, uint8_t value);
     int GetCurrentStatusMode() const;
+    void ResetWindowLine();
+    uint8_t GetIRQ48Signal() const;
+    void SetIRQ48Signal(uint8_t signal);
+    void SaveState(std::ostream &stream);
+    void LoadState(std::istream& stream);
     PaletteMatrix GetCGBBackgroundPalettes();
     PaletteMatrix GetCGBSpritePalettes();
+
+private:
+    void ScanLine(int line);
+    void RenderBG(int line, int pixel);
+    void RenderWindow(int line);
+    void RenderSprites(int line);
+    void UpdateStatRegister();
 
 private:
     Memory* m_pMemory;
@@ -41,13 +53,22 @@ private:
     int* m_pSpriteXCacheBuffer;
     uint8_t* m_pColorCacheBuffer;
     int m_iStatusMode;
+    int m_iStatusModeCounter;
+    int m_iStatusModeCounterAux;
+    int m_iStatusModeLYCounter;
     int m_iScreenEnableDelayCycles;
+    int m_iStatusVBlankLine;
+    int m_iTileCycleCounter;
     int m_iPixelCounter;
     bool m_bScreenEnabled;
     bool m_bCGB;
     uint16_t m_CGBSpritePalettes[8][4][2];
     uint16_t m_CGBBackgroundPalettes[8][4][2];
     GB_Color_Format m_pixelFormat;
+    uint8_t m_IRQ48Signal;
+    int m_iHideFrames;
+    int m_iWindowLine;
+    bool m_bScanLineTransferred;
 };
 
 #endif

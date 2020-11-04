@@ -67,6 +67,11 @@ void Memory::SetProcessor(Processor* pProcessor)
     m_pProcessor = pProcessor;
 }
 
+void Memory::SetVideo(Video* pVideo)
+{
+    m_pVideo = pVideo;
+}
+
 void Memory::MemoryDump(const char* szFilePath)
 {
     std::ofstream myFile(szFilePath, std::ios::out | std::ios::trunc);

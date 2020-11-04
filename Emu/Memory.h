@@ -29,8 +29,8 @@ public:
 public:
     Memory();
     ~Memory();
-     void SetProcessor(Processor* pProcessor);
-    // void SetVideo(Video* pVideo);
+    void SetProcessor(Processor* pProcessor);
+    void SetVideo(Video* pVideo);
     // void SetIORule(IORegisterMemoryRule* pRule);
     void Init();
     void Reset(bool bCGB);
@@ -69,7 +69,7 @@ public:
 
 private:
     Processor* m_pProcessor;
-    // Video* m_pVideo;
+    Video* m_pVideo;
     CommonMemoryRule* m_pCommonMemoryRule;
     // IORegisterMemoryRule* m_pIORegisterMemoryRule;
     MemoryRules* m_pCurrentMemoryRule;
