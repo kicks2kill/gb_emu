@@ -9,11 +9,12 @@
 #include "definitions.h"
 #include "MemoryRules.h"
 #include "CommonMemoryRule.h"
+#include "Video.h"
 #include <vector>
 
 class Processor;
 class MemoryRules;
-
+class Video;
 class Memory
 {
 public:

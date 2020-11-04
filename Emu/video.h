@@ -22,7 +22,7 @@ public:
     ~Video();
     void Init();
     void Reset(bool bCGB);
-    bool tick(unsigned int &clockCycles, uint16_t* pColorFrameBuffer, GB_Color_Format pixelFormat);
+    bool Tick(unsigned int &clockCycles, uint16_t* pColorFrameBuffer, GB_Color_Format pixelFormat);
     void EnableScreen();
     void DisableScreen();
     bool IsScreenEnabled() const;
