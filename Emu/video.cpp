@@ -185,6 +185,31 @@ void Video::UpdatePaletteAsSpecified(bool background, uint8_t value)
     int pal = (value >> 3) & 0x07;
 
     uint16_t color = (background ? m_CGBBackgroundPalettes[pal][index][0] : m_CGBSpritePalettes[pal][index][0]);
-    //Load method here. Need to figure out the bitwise operations and shifting performed.
+    m_pMemory->Load(background ? 0xFF69 : 0xFF6B, hl); //I'm not sure if this is complete, come back to it.
+}
+
+void Video::SetColorPalette(bool background, uint8_t value)
+{
+    uint8_t pos = background ? m_pMemory->Retrieve(0xFF68) : m_pMemory->Retrieve(0xFF6A); //65384 or 65386
+    bool hl = IsSetBit(pos, 0);
+    int index = (pos >> 1) & 0x03;
+    int pal = (pos >> 3) & 0x07;
+    bool increment = IsSetBit(pos, 7);
+    //perform if check
+
+    uint16_t* gbcPaletteColor = background ? &m_CGBBackgroundPalettes[pal][index][0] : &m_CGBSpritePalettes[pal][index][0];
+    uint16_t* gbcPaletteColorFinal = background ? &m_CGBBackgroundPalettes[pal][index][1] : &m_CGBSpritePalettes[pal][index][1];
+    /*
+        bitwise AND the value of gbcPaletteColor, or, perform a bitwise OR on the value where the value is shifted by 8 bits.
+        If neither, bitwise AND the value by 65280, then bitwise OR by the value
+    */
+    *gbcPaletteColor = hl ? (*gbcPaletteColor & 0x00FF) | (value << 8) : (*gbcPaletteColor & 0xFF00) | value;
+    uint8_t red_5bits = *gbcPaletteColor & 0x1F; //bitwise AND by 31 to get the red 5 bits
+    uint8_t green_5bits = (*gbcPaletteColor >> 5) & 0x1F; //bit shift right by 5, then bitwise AND by 31
+    uint8_t blue_5bits = (*gbcPaletteColor >> 10) & 0x1F; //bit shift right by 10, then bitwise AND by 31
+    uint8_t green_6bits = green_5bits << 1; //get 6th bit by bitshifting left by 1
+ 
+
+    
 }
 
