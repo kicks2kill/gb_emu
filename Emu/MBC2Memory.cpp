@@ -81,3 +81,53 @@ int MBC2Memory::GetCurrentROMBank1Index()
     return 0;
 }
 
+void MBC2Memory::SaveRAM(std::ostream& file)
+{
+    Log("MBC2Memory Saving Ram...");
+
+    for(int i = 0xA000; i < 0xA200; i++) //from 40960 to 41472
+    {
+        uint8_t ramBytes = m_pMemory->Retrieve(i);
+        file.write(reinterpret_cast<const char*>(&ramBytes), 1);
+    }
+    Log("MBC2Memory save RAM complete");
+}
+
+bool MBC2Memory::LoadRAM(std::istream &file, int32_t fileSize)
+{
+    Log("MBC2Memory Load RAM...");
+
+    if((fileSize > 0) && (fileSize != 512))
+    {
+        Log("MBC2Memory incorrect Size. Expected: 512 but found %d",fileSize);
+        return false;
+    }
+
+    for(int i = 0xA000; i < 0xA200; i++) //from 40960 to 41472
+    {
+        uint8_t ramBytes = 0;
+        file.read(reinterpret_cast<char*>(&ramBytes), 1);
+        m_pMemory->Load(i, ramBytes);
+    }
+
+    Log("MBC2Memory loading RAM complete");
+    return true;
+}
+
+void MBC2Memory::SaveState(std::ostream& stream)
+{
+    using namespace std;
+
+    stream.write(reinterpret_cast<const char*> (&m_iCurrentROMBank), sizeof(m_iCurrentROMBank));
+    stream.write(reinterpret_cast<const char*> (&m_bRAMEnabled), sizeof(m_bRAMEnabled));
+    stream.write(reinterpret_cast<const char*> (&m_CurrentROMAddr), sizeof(m_CurrentROMAddr));
+}
+
+void MBC2Memory::LoadState(std::istream& stream)
+{
+    using namespace std;
+
+    stream.read(reinterpret_cast<char*> (&m_iCurrentROMBank), sizeof(m_iCurrentROMBank));
+    stream.read(reinterpret_cast<char*> (&m_bRAMEnabled), sizeof(m_bRAMEnabled));
+    stream.read(reinterpret_cast<char*> (&m_CurrentROMAddr), sizeof(m_CurrentROMAddr));
+}
