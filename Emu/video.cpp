@@ -108,6 +108,16 @@ PaletteMatrix Video::GetCGBSpritePalettes()
     return &m_CGBSpritePalettes;
 }
 
+uint8_t Video::GetIRQ48Signal() const
+{
+    return m_IRQ48Signal;
+}
+
+void Video::SetIRQ48Signal(uint8_t signal)
+{
+    m_IRQ48Signal = signal;
+}
+
 
 void Video::EnableScreen()
 {
@@ -208,8 +218,60 @@ void Video::SetColorPalette(bool background, uint8_t value)
     uint8_t green_5bits = (*gbcPaletteColor >> 5) & 0x1F; //bit shift right by 5, then bitwise AND by 31
     uint8_t blue_5bits = (*gbcPaletteColor >> 10) & 0x1F; //bit shift right by 10, then bitwise AND by 31
     uint8_t green_6bits = green_5bits << 1; //get 6th bit by bitshifting left by 1
- 
-
     
+    switch(m_pixelFormat)
+    {
+        case GB_PIXEL_RGB565:
+        {
+            *gbcPaletteColorFinal = (red_5bits << 11) | blue_5bits | (green_6bits << 5);
+            break;
+        }
+        case GB_PIXEL_BGR565:
+        {
+            *gbcPaletteColorFinal = (blue_5bits << 11) | red_5bits | (green_6bits << 5);
+            break;
+        }
+        case GB_PIXEL_RGB555:
+        {
+            *gbcPaletteColorFinal = 0x8000 | (red_5bits << 10) | blue_5bits | (green_5bits << 5);
+            break;
+        }
+        case GB_PIXEL_BGR555:
+        {
+            *gbcPaletteColorFinal = 0x8000 | (blue_5bits << 10) | red_5bits | (green_5bits << 5);
+            break;
+        }
+    }
+    //Should we check if the values coming in are little endian or big endian?
 }
 
+void Video::ResetWindowLine()
+{
+    uint8_t winY = m_pMemory->Retrieve(0xFF4A);
+    if((m_iWindowLine == 0) && (m_iStatusModeLYCounter < 144) && (m_iStatusModeLYCounter > winY))
+        m_iWindowLine = 144;
+}
+
+//  // Write a method to compare LY to LYC
+//  //  UpdateStatRegister Method
+//  //  RenderSprites Method
+//  //  RenderWindow Method
+//  //  RenderBG Method
+
+void Video::ScanLine(int line)
+{
+    if(IsValidPointer(m_pColorFrameBuffer))
+    {
+        uint8_t lcdc = m_pMemory->Retrieve(0xFF40); //65344
+
+        if(m_bScreenEnabled && IsSetBit(lcdc, 7))
+        {
+            // RenderWindow(line);
+            // RenderSprites(line);
+        }
+        else 
+        {
+            //perform a line width check against gameboy width.
+        }
+    }
+}
