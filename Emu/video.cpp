@@ -178,3 +178,13 @@ void Video::LoadState(std::istream& stream)
     stream.read(reinterpret_cast<char*> (&m_IRQ48Signal), sizeof(m_IRQ48Signal));
 }
 
+void Video::UpdatePaletteAsSpecified(bool background, uint8_t value)
+{
+    bool hl = IsSetBit(value, 0);
+    int index = (value >> 1) & 0x03;
+    int pal = (value >> 3) & 0x07;
+
+    uint16_t color = (background ? m_CGBBackgroundPalettes[pal][index][0] : m_CGBSpritePalettes[pal][index][0]);
+    //Load method here. Need to figure out the bitwise operations and shifting performed.
+}
+
