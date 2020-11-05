@@ -303,6 +303,28 @@ void Video::RenderWindow(int line)
     if((winY > 143) || (winY > line))
         return;
 
-    //Finish this
-    
+    uint8_t palette = m_pMemory->Retrieve(0xFF47); //65351
+    int tiles = IsSetBit(lcdc, 4) ? 0x8000 : 0x8800; //32768 : 34816
+    int map = IsSetBit(lcdc,6) ? 0x9C00 : 0x9800; //39936 : 38912
+    int y32 = (m_iWindowLine >> 3) << 5;
+    int pixelY = m_iWindowLine & 0x7;
+    int pixelY2 = pixelY << 1;
+    int pixelY2Flipped = ( 7 - pixelY2) << 1;
+    int lineWidth = (line * GAMEBOY_WIDTH);
+
+    for(int i = 0; i < 32; i++)
+    {
+        int tile = 0;
+        if(tiles == 0x8800) //34816
+        {
+            tile = static_cast<int32_t> (m_pMemory->Retrieve(map + y32 + i));
+            tile += 128;
+        }
+        else
+        {
+            tile = m_pMemory->Retrieve(map + y32 + i);
+        }
+
+        //tile attributes here... bytes..offsets...bank
+    }
 }
