@@ -200,6 +200,7 @@ void Video::UpdatePaletteAsSpecified(bool background, uint8_t value)
 
 void Video::SetColorPalette(bool background, uint8_t value)
 {
+    //Should we check if the values coming in are little endian or big endian?
     uint8_t pos = background ? m_pMemory->Retrieve(0xFF68) : m_pMemory->Retrieve(0xFF6A); //65384 or 65386
     bool hl = IsSetBit(pos, 0);
     int index = (pos >> 1) & 0x03;
@@ -242,7 +243,6 @@ void Video::SetColorPalette(bool background, uint8_t value)
             break;
         }
     }
-    //Should we check if the values coming in are little endian or big endian?
 }
 
 void Video::ResetWindowLine()
@@ -266,12 +266,43 @@ void Video::ScanLine(int line)
 
         if(m_bScreenEnabled && IsSetBit(lcdc, 7))
         {
-            // RenderWindow(line);
+            RenderWindow(line);
             // RenderSprites(line);
         }
         else 
         {
-            //perform a line width check against gameboy width.
+            int lineWidth = (line * GAMEBOY_WIDTH);
+            if(m_bCGB)
+            {
+                for(int i = 0; i < GAMEBOY_WIDTH; i++)
+                    m_pColorFrameBuffer[lineWidth + i] = 0x8000; //assign 32768 to index
+            }
+            else 
+            {
+                for(int i = 0; i < GAMEBOY_WIDTH; i++)
+                    m_pFrameBuffer[lineWidth + i] = 0;
+            }
         }
     }
+}
+
+void Video::RenderWindow(int line)
+{
+    if(m_iWindowLine > 143)
+        return;
+    
+    uint8_t lcdc = m_pMemory->Retrieve(0xFF40);
+    if(!IsSetBit(lcdc, 5))
+        return;
+
+    int winX = m_pMemory->Retrieve(0xFF48) - 7; //65352 - 7
+    if(winX > 159)
+        return;
+
+    uint8_t winY = m_pMemory->Retrieve(0xFF4A); //65354
+    if((winY > 143) || (winY > line))
+        return;
+
+    //Finish this
+    
 }
