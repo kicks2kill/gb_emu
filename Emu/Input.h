@@ -23,7 +23,7 @@ public:
     void KeyPressed(Gameboy_Keys key);
     void KeyReleased(Gameboy_Keys key);
     void SaveState(std::ostream &stream);
-    void LoadState(std::ostream &stream);
+    void LoadState(std::istream &stream);
 
 private:
     Memory* m_pMemory;
@@ -43,7 +43,7 @@ inline uint8_t Input::Read()
 inline void Input::Write(uint8_t value)
 {
     m_p1 = (m_p1 & 0xCF) | (value & 0x30); //bitwise AND by 207 or the value by 48
-    Update(); //write this
+    Update(); 
 }
 
 
