@@ -317,14 +317,54 @@ void Video::RenderWindow(int line)
         int tile = 0;
         if(tiles == 0x8800) //34816
         {
-            tile = static_cast<int32_t> (m_pMemory->Retrieve(map + y32 + i));
+            tile = static_cast<int32_t> (m_pMemory->Retrieve(map + y32 + i)); //Converts between types using a combination of implicit and user-defined conversions.
             tile += 128;
         }
         else
         {
             tile = m_pMemory->Retrieve(map + y32 + i);
         }
+        uint8_t cgbTileAttr = m_bCGB ? m_pMemory->ReadCGBLCDRAM(map + y32 + i, true) : 0;
+        uint8_t cgbTilePalette = m_bCGB ? (cgbTileAttr & 0x07) : 0;
+        bool cgbTileBank = m_bCGB ? IsSetBit(cgbTileAttr, 3) : false;
+        bool cgbTileXFlip = m_bCGB ? IsSetBit(cgbTileAttr, 5) : false;
+        bool cgbTileYFlip = m_bCGB ? IsSetBit(cgbTileAttr, 6) : false;
+        int mapOffsetX = i << 3;
+        int tile16 = tiles << 4;
+        uint8_t byte1 = 0;
+        uint8_t byte2 = 0;
+        int finalPixelY = (m_bCGB && cgbTileYFlip) ? pixelY2Flipped : pixelY2;
+        int tileAddress = tiles + tile16 + finalPixelY;
 
-        //tile attributes here... bytes..offsets...bank
+        if(m_bCGB && cgbTileBank)
+        {
+            byte1 = m_pMemory->ReadCGBLCDRAM(tileAddress, true);
+            byte2 = m_pMemory->ReadCGBLCDRAM(tileAddress + 1, true);
+        }
+        else
+        {
+            byte1 = m_pMemory->Retrieve(tileAddress);
+            byte2 = m_pMemory->Retrieve(tileAddress + 1);
+        }
+
+        for( int pixelsX = 0; pixelsX < 8; pixelsX++)
+        {
+            int bufferX = (mapOffsetX + pixelsX + winX);
+            if(bufferX < 0 || bufferX >= GAMEBOY_WIDTH)
+                continue;
+
+            if(m_bCGB && cgbTileXFlip)
+            {
+                pixelsX = 7 - pixelsX;
+            }
+            
+        }
     }
+}
+
+
+void Video::UpdateStatRegister()
+{
+    uint8_t stat = m_pMemory->Retrieve(0xFF41); //65345
+    m_pMemory->Load(0xFF41, (stat & 0xFC) | (m_iStatusMode & 0x3)); //Bitwise AND stat by 252, OR the status mode by 3
 }
