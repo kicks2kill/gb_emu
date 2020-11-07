@@ -53,11 +53,33 @@ void Memory::Reset(bool bCGB)
         m_pDisassembledMap[i].bytes[0] = 0;
         m_pDisassembledMap[i].sz = 0;
 
-        //if i >= and < ... ?
+        if((i >= 0x8000) && (i < 0xA000)) //32768 and 40960
+        {
+            m_pMap[i] = 0x00;
+            m_pLCDRAMBank1[i - 0x8000] = 0x00;
+        }
+        else if((i >= 0xC000) && (i < 0xE000))  //49152 and 57344
+        { 
+            //perform some check here
+        }
     }
     if(m_bCGB)
     {
-        //HDMA stuff?
+       for(int i =0; i < 5; i++)
+       {
+           m_HDMA[i] = m_pMap[0xFF51 + i];
+       }
+       uint8_t hdma1 = m_HDMA[0];
+       uint8_t hdma2 = m_HDMA[1];
+       uint8_t hdma3 = m_HDMA[2];
+       uint8_t hdma4 = m_HDMA[3];
+
+       if(hdma1 > 0x7f && hdma1 < 0xF0) //127 and less than 240
+            hdma1 = 0;
+
+        m_HDMASource = (hdma1 << 8) | (hdma2 & 0xF0);
+        m_HDMADest = ((hdma3 & 0x1F) << 8) | (hdma4 & 0xF0); //31 bit shifted by 8, or ANDd by 240
+        m_HDMADest |= 0x8000; //32768
     }
 
 }
@@ -91,6 +113,39 @@ void Memory::MemoryDump(const char* szFilePath)
             }
         }
         myFile.close();
+    }
+}
+
+void Memory::MemoryDump(const char* szFilePath)
+{
+    using namespace std;
+
+    ofstream myFile(szFilePath, ios::out | ios::trunc);
+
+    if(myFile.is_open())
+    {
+        for(int i = 0; i < 65536; i++)
+        {
+            if(m_pDisassembledMap[i].name[0] != 0)
+            {
+                myFile << "0x" << hex << i << "\t " << m_pDisassembledMap[i].name << "\n";
+                i += (m_pDisassembledMap[i].sz -1);
+            }
+            else 
+            {
+                myFile << "0x"<< hex << i << "\t [0x" << hex << (int)m_pMap[i] << "]\n";
+            }
+        }
+        myFile.close();
+    }
+}
+
+void Memory::LoadBank0and1FromROM(uint8_t* pTheROM)
+{
+    //load in the first 32kB only. 
+    for(int i =0; i < 0x8000; i++)
+    {
+        m_pMap[i] = pTheROM[i];
     }
 }
 

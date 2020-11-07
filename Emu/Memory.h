@@ -64,6 +64,7 @@ public:
     uint8_t* GetRAM();
     uint8_t* GetWRAM0();
     uint8_t* GetWRAM1();
+    void LoadBank0and1FromROM(uint8_t* pTheROM);
     //define GDMA and HDMA declaration/definition
 
     
@@ -84,6 +85,9 @@ private:
     int m_iCurrentLCDRAMBank;
     uint8_t* m_pWRAMBanks;
     uint8_t* m_pLCDRAMBank1;
+    uint8_t m_HDMA[5];
+    uint16_t m_HDMASource;
+    uint16_t m_HDMADest;
 };
 
 //these are from Gambatte 
