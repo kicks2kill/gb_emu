@@ -14,13 +14,11 @@ struct blip_buffer_state_t;
 
 class blip_buffer {
 public:
-    typedef const char* blargg__err;
-
     void clock_rate( long clocks_per_sec);
 
     //set output rate and buffer length in ms (1/1000 sec, 1/4 of a second).
     //if not enough memory, leaves buffer untouched and returns 'out of memory'
-    blargg__err set_sample_rate(long samples_per_sec, int msc_length = 1000 /4);
+    char* set_sample_rate(long samples_per_sec, int msc_length = 1000 /4);
     
     //Ends current time frame of specified duration and makes its samples available
     //for reading with read_samples(). Begin a new time frame at end of current frame
@@ -183,11 +181,56 @@ class silent_blip_buffer : public blip_buffer
 {
      long buf [blip_buffer_extra_ + 1];
 public:
-    blargg__err set_sample_rate(long samples_per_sec, int msec_length);
+    char* set_sample_rate(long samples_per_sec, int msec_length);
     long count_clocks_frame(long count) const;
     void mix_samples(short const* buf,long count);
     
     silent_blip_buffer();
 };
 
+#if __GNUC__ >= 3 || _MSC_VER >= 1100
+    #define blip_restricted __restrict
+#else
+    #define blip_restricted
+#endif
+    //Optimized reading from blip_buffer, for use in custom sample outputs.
+    //Begins reading from buffer, name should be unique to the current block utilized.
+#define blip_reader_begin(name, blip_buffer) \
+    const blip_buffer::long * blip_restricted name##_reader_buf = (blip_buffer).buffer_; \
+    long name##_reader_accum = (blip_buffer).reader_accum_
+
+//gets value to pass to the blip_reader_next()
+#define blip_reader_bass(blip_buffer) ((blip_buffer).bass_shift_)
+
+
+//const valuie to use instead of blip_reader_bass, where optimal at the cost of having no bass control.
+int const blip_reader_default_bass = 9;
+
+//current sample to read
+#define blip_reader_read(name) (name##_reader_accum >> (blip_sample_bits - 16))
+
+//current dry sample
+#define blip_reader_read_dry(name) (name##_reader_accum)
+
+//advance to next sample
+#define blip_reader_next(name, bass) \
+    (void) (name##_reader_accum += *name##_reader_buff++ - (name##_reader_accum >> (bass)))
+
+//ends reading samples from buffer
+#define blip_reader_end(name, blip_buffer) \
+    (void)((blip_buffer)).reader_accum_ = name##_reader_accum)
+
+class blip_reader
+{
+public:
+    int begin(blip_buffer&);
+    long read() const {return accum >> (blip_sample_bits - 16);}
+    long read_dry() const {return accum;}
+    void next(int bass_shift = 9) {accum += *buf++ - (accum >> bass_shift);}
+    void end(blip_buffer& b) {b.reader_accum_ = accum;}
+
+private:
+    const blip_buffer::long * buf;
+    long accum;
+};
 };

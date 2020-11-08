@@ -54,6 +54,7 @@ public:
     void SwitchCGBLCDWRAM(uint8_t value);                 //LCD WRAM
     uint8_t Retrieve(uint16_t addr);
     void PerformDMA(uint8_t value);
+    void SwitchCGBDMA(uint8_t value);
     stDisassembleRecord* GetDisassembledMemoryMap();
     stDisassembleRecord* GetDisassembledROMMemoryMap();
     std::vector<stDisassembleRecord*>* GetBreakpoints();

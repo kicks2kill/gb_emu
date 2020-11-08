@@ -221,3 +221,8 @@ void Memory::PerformDMA(uint8_t value)
     }
 }
 
+void Memory::SwitchCGBDMA(uint8_t value)
+{
+    //define this
+}
+
