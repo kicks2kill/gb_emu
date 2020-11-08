@@ -117,10 +117,4 @@ public:
     typedef unsigned blargg_ulong;
 #endif
 
-
-
-
-
-
-
 #endif

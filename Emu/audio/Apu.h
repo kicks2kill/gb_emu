@@ -7,7 +7,7 @@
 #define APU_H
 
 #include "blip_buffer.h"
-//we'll need to include an oscillator
+#include "Oscil.h"
 class Apu 
 {
 public:
@@ -74,13 +74,17 @@ private:
     Apu& operator = (const Apu&); 
 
     //set up oscillator here
+    Oscil* oscs [oscil_count];
     long last_time;
     long frame_period;
     double _volume;
+    
+    //setup oscil
+    long frame_time; //time of next frame sequence
+    int frame_phase; //phase of next frame sequence
+    enum {regs_size = reg_count + 0x10};
 
-    //set up different oscillations here.
-
-}
+};
 
 
 #endif
