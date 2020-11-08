@@ -44,8 +44,42 @@ public:
     //start a new frame at time 0 after specified time - end time
     void end_frame(long frame_length);
 
+    // //Volume, Treble and Tempo
 
-    // // Specify volume, treble, tempo...
+    void volume(double); //1.0 is normal
+    
+    //set the treble equalization
+    void treble_equal(blip_eq_t const&);
+
+    //treble and bass values for various hardware
+    enum
+    {
+        speaker_treble = -47, //speaker on sys
+        speaker_bass = 2000,
+        dmg_treble = 0, //headphones on each sys
+        dmg_bass = 30,
+        cgb_treble = 0,
+        cgb_bass = 300
+    };
+
+    //1.0 is normal, this is used for adjusting tempo in a game music player.
+    void set_tempo(double);
+
+public:
+    Apu();
+
+private:
+    //should be non-copyable
+    Apu(const Apu&);
+    Apu& operator = (const Apu&); 
+
+    //set up oscillator here
+    long last_time;
+    long frame_period;
+    double _volume;
+
+    //set up different oscillations here.
+
 }
 
 
