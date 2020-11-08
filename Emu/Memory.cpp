@@ -94,50 +94,24 @@ void Memory::SetVideo(Video* pVideo)
     m_pVideo = pVideo;
 }
 
-void Memory::MemoryDump(const char* szFilePath)
+void Memory::SetCurrentRule(MemoryRules* pRule)
 {
-    std::ofstream myFile(szFilePath, std::ios::out | std::ios::trunc);
-
-    if(myFile.is_open())
-    {
-        for(int i = 0; i < 65536; i++)
-        {
-            if(m_pDisassembledMap[i].name[0] != 0)
-            {
-                myFile << "0x" << std::hex << i << "\t" << m_pDisassembledMap[i].name << std::endl;
-                i += (m_pDisassembledMap[i].sz - 1);
-            }
-            else 
-            {
-                myFile << "0x" << std::hex << i << "\t [0x" << std::hex << (int)m_pMap[i] << "]" << std::endl;
-            }
-        }
-        myFile.close();
-    }
+    m_pCurrentMemoryRule = pRule;
 }
 
-void Memory::MemoryDump(const char* szFilePath)
+void Memory::SetCommonRule(CommonMemoryRule* pRule)
 {
-    using namespace std;
+    m_pCommonMemoryRule = pRule;
+}
 
-    ofstream myFile(szFilePath, ios::out | ios::trunc);
+MemoryRules* Memory::GetCurrentRule()
+{
+    return m_pCurrentMemoryRule;
+}
 
-    if(myFile.is_open())
-    {
-        for(int i = 0; i < 65536; i++)
-        {
-            if(m_pDisassembledMap[i].name[0] != 0)
-            {
-                myFile << "0x" << hex << i << "\t " << m_pDisassembledMap[i].name << "\n";
-                i += (m_pDisassembledMap[i].sz -1);
-            }
-            else 
-            {
-                myFile << "0x"<< hex << i << "\t [0x" << hex << (int)m_pMap[i] << "]\n";
-            }
-        }
-        myFile.close();
-    }
+uint8_t* Memory::GetMemoryMap()
+{
+    return m_pMap;
 }
 
 void Memory::LoadBank0and1FromROM(uint8_t* pTheROM)
@@ -196,3 +170,54 @@ void Memory::SetRunToBreakpoint(Memory::stDisassembleRecord* pBreakpoint)
 {
     m_pRunToBreakpoint = pBreakpoint;
 }
+
+
+void Memory::MemoryDump(const char* szFilePath)
+{
+    using namespace std;
+
+    ofstream myFile(szFilePath, ios::out | ios::trunc);
+
+    if(myFile.is_open())
+    {
+        for(int i = 0; i < 65536; i++)
+        {
+            if(m_pDisassembledMap[i].name[0] != 0)
+            {
+                myFile << "0x" << hex << i << "\t " << m_pDisassembledMap[i].name << "\n";
+                i += (m_pDisassembledMap[i].sz -1);
+            }
+            else 
+            {
+                myFile << "0x"<< hex << i << "\t [0x" << hex << (int)m_pMap[i] << "]\n";
+            }
+        }
+        myFile.close();
+    }
+}
+
+void Memory::PerformDMA(uint8_t value)
+{
+    if(m_bCGB)
+    {
+        uint16_t address = value << 8;
+        if(address < 0xE000) //57344
+        {
+            if(address >= 0x8000 && address < 0xA000) //32768 AND 40960
+            {
+                for(int i = 0; i < 0xA0; i++)
+                    Load(0xFE00 + i, ReadCGBLCDRAM(address + i, false));
+            }//we need some else if conditions here...
+        }
+        else
+        {
+            uint16_t address = value << 8;
+            if(address > 0x8000 && address < 0xE000) //32768 AND 57344
+            {
+                for(int i =0; i < 0xA0; i++) //160
+                    Load(0xFE00 + i, Read(address + i)); //65024 + i, and read in address + i
+            }
+        }
+    }
+}
+
