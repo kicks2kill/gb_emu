@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "Memory.h"
+#include "memory/Memory.h"
 #include "Processor.h"
 #include "Video.h"
 

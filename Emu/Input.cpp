@@ -4,7 +4,7 @@
 */
 
 #include "Input.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 #include "Processor.h"
 
 Input::Input(Memory* pMemory, Processor* pProcessor)

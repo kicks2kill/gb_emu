@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <ctype.h>
 #include "Processor.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 #include "opcode_names.h"
 #include "opcode_timing.h"
 

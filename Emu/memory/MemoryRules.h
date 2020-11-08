@@ -7,7 +7,7 @@
 #define MEMORYRULES_H
 
 #include "definitions.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 #include <vector>
 
 class Memory;

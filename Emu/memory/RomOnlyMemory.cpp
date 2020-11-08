@@ -5,7 +5,7 @@
 
 #include "RomOnlyMemory.h"
 #include "video.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 #include "Processor.h"
 #include "Cartridge.h"
 // #include "Input.h"

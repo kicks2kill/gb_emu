@@ -7,7 +7,7 @@
 #define PROCESSOR_INLINED_H
 
 #include "definitions.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 #include "Processor.h"
 
 inline int Processor::AdjustedCycles(int cycles)

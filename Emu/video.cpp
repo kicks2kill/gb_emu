@@ -4,7 +4,7 @@
 */
 
 #include "Video.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 #include "Processor.h"
 
 Video::Video(Memory* pMemory, Processor* pProcessor)
