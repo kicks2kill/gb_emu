@@ -233,4 +233,12 @@ private:
     const blip_buffer::long * buf;
     long accum;
 };
+
+struct blip_buffer_state_t
+{
+    long reader_accum;
+    long buf[blip_buffer_extra_];
+    unsigned long offset;
+};
+
 };
