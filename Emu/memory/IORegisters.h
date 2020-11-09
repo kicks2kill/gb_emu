@@ -40,7 +40,35 @@ private:
 
 inline uint8_t IORegisters::PerformRead(uint16_t addr)
 {
-    //TODO
+    switch(addr)
+    {
+        case 0xFF00:
+        {
+            //P1
+            return m_pInput->Read();
+        }
+        case 0xFF07:
+        {
+            //TAC
+            return m_pMemory->Retrieve(0xFF07) | 0xF8;
+        }
+        case 0xFF0F:
+        {
+            //IF
+            return m_pMemory->Retrieve(0xFF0F) | 0xE0;
+        }
+        case 0xFF3F:
+        {
+            //SOUND REG
+            return m_pAudio->ReadAudioRegister(addr);
+        }
+        case 0xFF41:
+        {
+            //STAT
+            return m_pMemory->Retrieve(0xFF41) | 0x80;
+        }
+        
+    }
 }
 
 #endif
