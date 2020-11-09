@@ -73,17 +73,21 @@ private:
     Apu(const Apu&);
     Apu& operator = (const Apu&); 
 
-    //set up oscillator here
+    //set up types here
     Oscil* oscs [oscil_count];
+    Sweep_Square square1;
+    Square square2;
+    Wave wave;
+    Noise noise;
+
+    long frame_time; //time of next frame sequence
+    int frame_phase; //phase of next frame sequence
+    
+    enum {regs_size = reg_count + 0x10};
     long last_time;
     long frame_period;
     double _volume;
-    
-    //setup oscil
-    long frame_time; //time of next frame sequence
-    int frame_phase; //phase of next frame sequence
-    enum {regs_size = reg_count + 0x10};
-
+ 
 };
 
 
