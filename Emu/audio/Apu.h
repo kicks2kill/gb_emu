@@ -82,13 +82,59 @@ private:
 
     long frame_time; //time of next frame sequence
     int frame_phase; //phase of next frame sequence
-    
     enum {regs_size = reg_count + 0x10};
     long last_time;
     long frame_period;
     double _volume;
- 
+    bool _reduce_clicks;
+
+    uint8_t regs[regs_size];
+
+private:
+    void apply_volume();
+    void apply_stereo();
+    void reset_lengths();
+    void reset_regs();
+    int calc_output(int oscil) const;
+    void synth_voluime(int synth);
+    void run_until(long);
+    void run_until2(long);
+    void silence_oscil(Oscil&);
+    void write_oscil(int index, int reg, int old_d, int new_d);
+    const char* save_load(apu_state_t*, bool save);
+    void save_load2(apu_state_t*, bool save);
+    // friend class Apu_Tester;
 };
 
 
+//this serves as the format of save state
+struct apu_state_t
+{
+
+enum { format0 = 0x50414247};
+
+int format; // format of following data
+int version;
+int frame_time;
+int frame_phase;
+
+int sweep_freq;
+int sweep_delay;
+int sweep_enabled;
+int sweep_neg;
+int noise_dividers;
+int wave_buf;
+
+int delay[4];
+int length_ctr[4];
+int phase[4];
+int enabled[4];
+
+int env_delay[3];
+int env_volume[3];
+int env_enabled[3];
+
+unsigned char regs [0x40];
+
+};
 #endif
