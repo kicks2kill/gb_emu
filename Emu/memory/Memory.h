@@ -68,6 +68,10 @@ public:
     uint8_t* GetWRAM1();
     void LoadBank0and1FromROM(uint8_t* pTheROM);
     //define GDMA and HDMA declaration/definition
+    void SetHDMARegister(int reg, uint8_t value);
+    uint8_t GetHDMARegister(int reg) const;
+    uint8_t* GetCGBRAM();
+
 
     
 

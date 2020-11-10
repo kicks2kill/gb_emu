@@ -80,10 +80,37 @@ inline uint8_t IORegisters::PerformRead(uint16_t addr)
         case 0xFF51:
         {
             //HDMA1
-            // return (m_bCGB ? m_pMemory->GetHDMARegister(1) : m_pMemory->Retrieve(addr));
+            return (m_bCGB ? m_pMemory->GetHDMARegister(1) : m_pMemory->Retrieve(addr));
         }
-        
+        case 0xFF52:
+        {
+            //HDMA2
+            return (m_bCGB ? m_pMemory->GetHDMARegister(2) : m_pMemory->Retrieve(addr));
+        }
+        case 0xFF53:
+        {
+            //HDMA3
+            return (m_bCGB ? m_pMemory->GetHDMARegister(3) : m_pMemory->Retrieve(addr));
+        }
+        case 0xFF54:
+        {
+            //HDMA4
+            return (m_bCGB ? m_pMemory->GetHDMARegister(4) : m_pMemory->Retrieve(addr));
+        }
+        case 0xFF55:
+        {
+            //DMA CGB
+            return (m_bCGB ? m_pMemory->GetHDMARegister(5) : m_pMemory->Retrieve(addr));
+        }
     }
 }
 
+
+inline void IORegisters::PerformWrite(uint16_t addr, uint8_t value)
+{
+    switch(addr)
+    {
+        //Define these
+    }
+}
 #endif
