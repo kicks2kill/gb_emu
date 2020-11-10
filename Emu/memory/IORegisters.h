@@ -35,7 +35,7 @@ private:
     Video* m_pVideo;
     Input* m_pInput;
     Audio* m_pAudio;
-    bool b_CGB;
+    bool m_bCGB;
 };
 
 inline uint8_t IORegisters::PerformRead(uint16_t addr)
@@ -66,6 +66,21 @@ inline uint8_t IORegisters::PerformRead(uint16_t addr)
         {
             //STAT
             return m_pMemory->Retrieve(0xFF41) | 0x80;
+        }
+        case 0xFF44:
+        {
+            //LY
+            return (m_pVideo->IsScreenEnabled() ? m_pMemory->Retrieve(0xFF44) : 0x00);
+        }
+        case 0xFF4F:
+        {
+            //VBK
+            return m_pMemory->Retrieve(0xFF4F) | 0xFE;
+        }
+        case 0xFF51:
+        {
+            //HDMA1
+            // return (m_bCGB ? m_pMemory->GetHDMARegister(1) : m_pMemory->Retrieve(addr));
         }
         
     }
