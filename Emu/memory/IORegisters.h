@@ -110,7 +110,92 @@ inline void IORegisters::PerformWrite(uint16_t addr, uint8_t value)
 {
     switch(addr)
     {
-        //Define these
+         case 0xFF00:
+        {
+            //P1
+            m_pInput->Write(value);
+            break;
+        }
+        case 0xFF07:
+        {
+            //TAC
+            value &= 0x07;
+            uint8_t current_tac = m_pMemory->Retrieve(0xFF07);
+            if((current_tac & 0x03) != (value & 0x03))
+            {
+                m_pProcessor->ResetTIMACycles();
+            }
+            m_pMemory->Load(addr,value);
+            break;
+
+        }
+        case 0xFF0F:
+        {
+            //IF
+            m_pMemory->Load(addr, value & 0x1F);
+            break;
+        }
+        case 0xFF3F:
+        {
+            //SOUND REG
+            m_pAudio->WriteAudioRegister(addr, value);
+            break;
+            
+        }
+        case 0xFF40:
+        {
+            //LCDC
+            uint8_t current = m_pMemory->Retrieve(0xFF40);
+            uint8_t new_lcdc = value;
+            m_pMemory->Load(addr, new_lcdc);
+            if(!IsSetBit(current, 5) && IsSetBit(new_lcdc, 5))
+                m_pVideo->ResetWindowLine();
+            if(IsSetBit(new_lcdc, 7))
+                m_pVideo->EnableScreen();
+            else
+                m_pVideo->DisableScreen();
+            break;
+        }
+        case 0xFF41:
+        {
+            //STAT
+           
+        }
+        case 0xFF44:
+        {
+            //LY
+            
+        }
+        case 0xFF4F:
+        {
+            //VBK
+           
+        }
+        case 0xFF51:
+        {
+            //HDMA1
+            
+        }
+        case 0xFF52:
+        {
+            //HDMA2
+            
+        }
+        case 0xFF53:
+        {
+            //HDMA3
+            
+        }
+        case 0xFF54:
+        {
+            //HDMA4
+            
+        }
+        case 0xFF55:
+        {
+            //DMA CGB
+            
+        }
     }
 }
 #endif

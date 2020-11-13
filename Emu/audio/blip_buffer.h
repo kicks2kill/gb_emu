@@ -241,4 +241,12 @@ struct blip_buffer_state_t
     unsigned long offset;
 };
 
+template<int quality, int range>
+inline void blip_synth<quality,range>::offset_sampled(long time, int delta, blip_buffer* blip_buf) const
+{
+    delta *= impl.delta_factor;
+    long* blip_restricted buf = blip_buf->buffer_ + (time >> BLIP_BUFFER_ACCURACY);
+    int phase = (int) (time >> (BLIP_BUFFER_ACCURACY - BLIP_PHASE_BITS) & (blip_res - 1));
+}
+
 };
